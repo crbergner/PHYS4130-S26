@@ -52,18 +52,26 @@ print("Gaussian Quadrature")
 print("")
 print("")
 
-#map the integral from [0,2] to [-1,1] using the u-substitution given
-# use the scipy function to get sample pts and weights
-# implement the gaussian quadrature formula
-# test it on the integral
-# verfiy that the u function works
-# calculate du
-
 #########################################################################
 print("#########################################################################")
 
+# import libraries
+import scipy as sp
 
+# initialize variables
+roots, weights = sp.special.root_legendre(N)
 
+# define gaussian quadrature
+def gauss_quad(f, a, b):
+    
+    # convert limits of integration
+    inv_u = ((b - a) * roots + a + b) / 2
+    inv_du = (b - a) / 2
+
+    return(inv_du * np.sum(weights * f(inv_u)))
+
+ans = gauss_quad(lambda x: np.sin(np.sqrt(100*x))**2, 0, 2)
+print("Evaluating the integral gives: ", ans)
 
 
 #########################################################################
