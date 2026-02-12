@@ -83,13 +83,26 @@ def midpoint(f,a,b,N):
 def Simpson(f, a, b, N):
     return (1/3 * trapezoid(f, a, b, N)) + (2/3 * midpoint(f, a, b, N))
 
-# Simpson with limits -1 to 1 is guassian quadrature. 
-# PLanning to do the u sub before sending to simpson
+# Simpson with limits -1 to 1
+# PLanning to do the parameterization before sending to Simpson
 
-def sub(u): 
+def sub(u):         # Parameterization: integral from a,b to -1,1 
     x = ((b-a)*u/2)+(a+b)/2
     dx_over_du = 2/(b-a)
     return (1/dx_over_du)*(sin(x))
 
-print("Guassian Quad result for 1000 subintervals: ", Simpson(sub, -1, 1, 1000))
+print("\n Parameterized Simpson rule result for 1024 subintervals: ", Simpson(sub, -1, 1, 1024))
+
+# Guassian Quadrature
+
+import scipy as sp
+
+def quad(a, b, N):
+    roots, weights = sp.special.roots_legendre(N)
+    x = ((b-a)*roots/2)+(a+b)/2
+    dx_over_du = 2/(b-a)
+    return dx_over_du* np.sum(weights*sin(x))
+N_array = [2**k for k in range(1, 10)]
+for i in N_array:
+    print ("N: ", i, "; Guassian quadrature result: ", quad(0, 2, i))
 
