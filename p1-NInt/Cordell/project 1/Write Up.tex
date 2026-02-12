@@ -1,4 +1,5 @@
-\documentclass[11pt,letterpaper]{article}
+
+\documentclass{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -10,7 +11,6 @@
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{siunitx}
 \sisetup{separate-uncertainty=true}
-\usepackage{mhchem}
 \usepackage{graphicx}
 \usepackage[font=small,labelfont=bf]{caption}
 \usepackage{subcaption}
@@ -23,7 +23,7 @@
 \begin{document}
 
 \section{Attribution}
-attribtuions
+Numeric integrations NBs.
 
 \section{Timekeeping}
 Approx values
@@ -39,7 +39,7 @@ I worked on figuring out how to use github.
 Wednesday: 2.5 hours\\
 I implemented the Gaussian quadrature and plotted the Legendre polynomials.
 
-Thursday: 1 hour
+Thursday: 1 hour\\
 Write up.
 
 \section{Languages, Libraries, Lessons Learned}
@@ -52,5 +52,16 @@ standard because of their usefulness and simplicity, and I was already fairly fa
 In addition, I used the scipy library as instructed for Legendre polynomials. I would consider this 
 pretty remarkable as I did not have to calculate them myself which would be a pain. Meanwhile, 
 numpy and pylab are pretty remarkable in their own way--- they come in handy very often.
+
+\section{Figures}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1.0\linewidth]{LegendrePolynomials.png}
+  \caption{There are 16 subplots of Legendre polynomials \(P_{i}\), \(P_{j}\), and \(P_{i} \cdot P_{j}\) for i and j in the range 1-4. The area under the curve can be observed for 
+  each of the i=j subplots on the diagonal as well as the i \(\neq\) j subplots off diagonal. The areas under the i = j curves look to be approximately 1. Meanwhile, the areas under the i 
+  \(\neq\) j seem to be about 0. This is the visualization of the integral of \(P_{i} \cdot P_{j}\) from -1 to 1 equals the kroenecker delta function.}
+  \label{fig:LegendrePolyomials}
+\end{figure}
+\section{Extensions}
 
 \end{document}
