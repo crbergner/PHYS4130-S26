@@ -7,9 +7,9 @@
 
 From the pervious jupyter notebooks, we know that the trapezoidal rule is a numerical scheme for evaluating integrals. It works by locally approximating the function as a line and thus the area underneath it as a trapezoid. An iinteresting thing to examine for a numerical method is the rate at which it converges to the true value. So, we want to integrate the function
 
-$$
+```math
 f(x) = \sin(\sqrt{100 x})
-$$
+```
 
 and integrate over the region [0,2] using the trapezoid rule for a sequence of different numbers of subintervals. The following lines of code wille achieve just that.
 
@@ -74,30 +74,30 @@ As a refresher, the Legendre polynomials are a set of polynomials that are ortho
 
 The plots above visually demonstrate the orthogonality condition for the Legendre polynomials.
 
-$$
+```math
 \int_{-1}^{1} P_n(x)\,P_m(x)\dx = \frac{2}{2n+1}\\delta_{nm}
-$$
+```
 
 In order to take advantage of the orthogonality conditon in building our algorithm, we want to transform our integral onto the interval [-1,1], which we will do now.
 
-$$
+```math
 \text{Let } 
 u = \frac{1}{b-a}\left(2x - a - b\right).
-$$
+```
 
-$$
+```math
 \text{Then solving for } x:
 \qquad
 x = \frac{b-a}{2}\,u + \frac{a+b}{2}.
-$$
+```
 
-$$
+```math
 \frac{dx}{du} = \frac{b-a}{2}
 \quad \Rightarrow \quad
 dx = \frac{b-a}{2}\ du.
-$$
+```
 
-$$
+```math
 \boxed{
 \int_a^b f(x)\dx=
 \int_{-1}^{1}
@@ -106,41 +106,41 @@ f\!\left(
 \right)
 \frac{b-a}{2}\du.
 }
-$$
+```
 
 Then, we can build the Gaussian Quadrature algorithm with respect to integrals on [-1,1]. The derivation presented here is taken from and derivative of the one presented by Jeremy Tatum on Libre Texts. It starts with some results needed to construct the algorithm.
 
 We first recall polynomial division. Let P be a polynomial of degree n, and let S be a polynomial of degree 2n. Then, the polynomial division of these two has the form
-$$
+```math
 \frac{S(x)}{P(x)} = Q(x) + \frac{R(x)}{P(x)}
-$$
+```
 Where the quotient, Q, and the remainder, R, each have a degree less than n.
 
 Then, the next result is a consequecnce of orthogonality. For the legendre polynomial of degree l and any polynomial Q of degree less than l, then
-$$
+```math
 \int_{-1}^{1} P_l(x)Q(x)\ dx
-$$
+```
 This happenes because the legendre polynomials of degree less than l form an orthogonal basis for the set of polynomials with degree less than l on the interval [-1,1].
 
 Finally, we need to discuss Lagrange polynomials because they are used in the very end. If we have n known points of a function, then a polynomial approximation of degree n-1 can be constructed with the formula
-$$
+```math
 g(x) = \sum_{i=1}^{n} f(x_i)L_i(x)
-$$
+```
 
 The L_i are called the lagrange polynomials. 
 They can be calculated using the formula
-$$
+```math
 L_i(x) = \prod_{i \ne j} \frac{x-x_i}{x_i - x_j}
 \\
 x_i \text{ are the sampling points.}
 \\
 L_i(x_j) = \delta_{ij}
-$$
+```
 
 Now, we can start putting together the algorithm. We want to approximate the integral using a weighted sum of the function at n quadrature points in the interval [-1,1].
-$$
+```math
 \int_{-1}^{1} f(x) \ dx \approx \sum_{i=1}^{n} w_i f(x_i)
-$$
+```
 We demand that this approximation be exact for polynomials of degree less than 2n, so let S be such a polynomial. Then, the divison algorithm lets us express this in the form 
 ```math
 S(x) = Q(x)P_n(x) + R(x)
@@ -150,39 +150,39 @@ Where Pn is the nth degree legendre polynomial. Therefore,
 \int_{-1}^{1} S(x) \ dx = \int_{-1}^{1} Q(x)P_n(x) \dx + \int_{-1}^{1} R(x) \ dx
 ```
 Orthogonality gurantees that the integral of Q(x)Pn(x) goes to 0, so we obtain
-$$
+```math
 \int_{-1}^{1} S(x) \, dx = \int_{-1}^{1} R(x) \, dx
-$$
+```
 We will set that aside for now and consider our approximation. We want our weighted sum over our n quadrature points to exaclty evalaute the integral of S.
-$$
+```math
 \int_{-1}^{1} S(x) \,dx = \sum_{i=1}^{n} w_i S(x_i) = \sum_{i=1}^{n} w_i (Q(x_i)P_n(x_i) + R(x_i))
-$$
+```
 Then, we choose our quadrature points to be the n distinct roots of Pn. This reduces our equation to
-$$
+```math
 \int_{-1}^{1} S(x) \,dx =  \sum_{i=1}^{n} w_i  R(x_i)
-$$
+```
 And we now equate our two forms for the integral to yield
-$$
+```math
 \int_{-1}^{1} R(x) \,dx =  \sum_{i=1}^{n} w_i  R(x_i)
-$$
+```
 The important observation at this step is that we have converted the problem from inegrating a polynomial of degree up to 2n-1 with n quadrature points into an integral of an at most degree n-1 polynomial and n quadrature points. This can be handled precisely with lagrange quadrature. We continue by expressing R in terms of lagrange polynomials. 
 
 By construction
-$$
+```math
 R(x_i) = S(x_i) 
-$$
+```
 Therefore
-$$
+```math
 R(x) = \sum_{i=1}^{n} S(x_i)L_i(x) 
-$$
+```
 So
-$$
+```math
 \int_{-1}^{1} R(x) \, dx = \int_{-1}^{1} \sum_{i=1}^{n} S(x_i)L_i(x)  \, dx = \sum_{i=1}^{n} w_i  S(x_i)
-$$
+```
 By mvoing an integral into the sum and equating terms, we at last determine a formula for the weights.
-$$
+```math
 w_i = \int_{-1}^{1} L_i(x) \,dx = \frac{2}{(1-x_i^2)P'_i(x_i)^2}
-$$
+```
 Where that last equality is determined using algebra and properties of legendre polynomials. It is omitted here becausee it does not demonstrate the important ideas of Gaussian Quadrature. It is interesting that our weights are completley independent of our integrand. They only depend on the sample points, which are determined by the order of quadrature we have chosen. This can be seen from the defintion of the lagrange polynomials and the final formula obtained.
 
 We constrcuted this algorithm to be exact for polynomials up to degree 2n-1 for n quadrature points. Therefore, if an arbitrary function is well approximated on an interval by a polynomial of degree 2n-1 for some n, then we can be reasonably certain that guassian quadrature of order n will approximate the integral of the function on that interval. In general, reasonably well-behaved functions should then be better approximated as we make n large because they admit taylor approximations of any order.
@@ -220,10 +220,13 @@ When tabulate the results of this for function from the trapezoidal rule for a f
 It is immediatley obvious that at just 14 subintervals this algorithm achieves 11 decimal places of precision. This is a signifigant improvement to the 8192 needed for the trapezoidal rule to have 6 decimal places of precision.
 
 One thing that distinguishes Gaussian Quadrature from other integration algorithms is that it never evaluates at the limits of integration. This makes it worthwhile to experiment with a function that has a singularity at one of its limits of integration. So, consider
-$$
+```math
 \int_{0}^{2}\frac{y^2}{\sqrt{2-y}} \,dy
-$$
-The integrand diverges at y=2, howevever, the integral is know to converge to $ \frac{\sqrt{8192}}{15} \approx 6.03398$
+```
+The integrand diverges at y=2, howevever, the integral is know to converge to 
+```math
+\frac{\sqrt{8192}}{15} \approx 6.03398
+```
 When we run it through some test values for Gaussian Quadrature, we get
 
     Gaussian Quadrature
@@ -247,51 +250,51 @@ We can still observe the algorithm converging. Unfortunatley, however, it now ta
 Thankfully, all is not lost. We can transform this integral to remove the singularity at the upper limit.
 
 Let
-$$
+```math
 y = 2\sin^2 u.
-$$
+```
 
 Then
-$$
+```math
 dy = 4\sin u \cos u \, du.
-$$
+```
 
 Compute each part of the integrand:
 
-$$
+```math
 y^2 = (2\sin^2 u)^2 = 4\sin^4 u,
-$$
+```
 
-$$
+```math
 2 - y = 2 - 2\sin^2 u = 2(1 - \sin^2 u) = 2\cos^2 u,
-$$
+```
 
-$$
+```math
 \sqrt{2 - y} = \sqrt{2\cos^2 u} = \sqrt{2}\cos u.
-$$
+```
 
 Change the limits:
 
-$$
+```math
 y=0 \Rightarrow u=0,
 \qquad
 y=2 \Rightarrow u=\frac{\pi}{2}.
-$$
+```
 
 Substituting:
 
-$$
+```math
 \int_{0}^{2} \frac{y^2}{\sqrt{2 - y}} \, dy
 =
 \int_{0}^{\pi/2}
 \frac{4\sin^4 u}{\sqrt{2}\cos u}
 \cdot
 4\sin u \cos u \, du.
-$$
+```
 
 Simplifying:
 
-$$
+```math
 =
 \int_{0}^{\pi/2}
 \frac{16\sin^5 u \cos u}{\sqrt{2}\cos u}
@@ -299,18 +302,18 @@ $$
 =
 \int_{0}^{\pi/2}
 \frac{16}{\sqrt{2}}\sin^5 u \, du.
-$$
+```
 
 Since $\frac{16}{\sqrt{2}} = 8\sqrt{2}$,
 
-$$
+```math
 \boxed{
 \int_{0}^{2} \frac{y^2}{\sqrt{2 - y}} \, dy
 =
 8\sqrt{2}
 \int_{0}^{\pi/2} \sin^5 u \, du
 }
-$$
+```
 
 Now, we use Gaussian Quadrature on this transformed integral
 
