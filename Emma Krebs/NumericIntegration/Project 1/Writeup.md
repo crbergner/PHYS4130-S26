@@ -26,19 +26,26 @@ Although all these methods will get you to your correct approximation, not all m
 
 There are five main methods that we have discussed so far: leftpoint, rightpoint, midpoint methods, trapezoid rule, and Simpson's rule. Leftpoint, rightpoint, and midpoint methods inherently follow their namesake such that their rectangles align with the left, right, and middle points, respectively, of the top edge of the rectangle. An example of the three are shown in the figure below. The error of the leftpoint and rightpoint methods decrease at a similar rate and are the worst efficency approximations out of the five with the error decreasing at a linear rate. The midpoint method and trapezoid rule are slightly better decreasing at a quadratic proportionality. The best of the five is the Simpson's rule, which combines the weighted sums of the midpoint method and trapezoid rule to get an error proportionality with respect to the fourth power. However, for this code we worked on coding a trapezoid method to solve the following integral:
 
+```math
 I = \int_0^2 \mathrm{d}x\, \sin^2\left(\sqrt{100x}\right)
+```
 
 To do this, let us go a little more in depth with the trapezoid rule. We mentioned before that the proportionality of decreasing error for the leftpoint and rightpoint methods are approximately the same. Thus, the point of evaluation should not make much of a difference assuming our width of a subinterval is small and since the errors should be roughly the same in magnitude, but opposite in sign, we can make have a better method of integration by averaging both methods. This is where we get our trapezoid rule. That is, to approximate the integral
 
+'''math
 \tI = \\int_a^b f(x)\\,dx\n
+'''
 
 we can do
 
-\tI_T = \\frac{1}{2} \\left( I_L + I_R\\right) = \\sum_{i=0}^{N-1} \\frac{1}{2} \\left[ f(a + ih) + f(a + ih + h) \\right] h\n
+'''math
+\tI_T = \\frac{1}{2} \\left( I_L + I_R\\right) = \\sum_{i=0}^{N-1} \\frac{1}{2} \\left[ f(a + ih) + f(a + ih + h) \\right] h\n'$
+'''
 
 In my code, I created the following definition
 
 '''python
+
 def trapezoid_function(func, a, b, n):
 
     h = (b - a) / n # Width of our subinterval
@@ -53,6 +60,7 @@ def trapezoid_function(func, a, b, n):
 to represent this equation. The definition takes in the parameters func (given function), a (starting point of integral), b (ending point of integral), and n (the number of subintervals). Then, it loops over a range of n subintervals and continously sums using the trapezoid equation and our given parameters to get the approximate answer of the integral for n subintervals. While the trapezoid equation isn't called in the main body, it is called by another very important definition: the approximator.
 
 '''python
+
 def approximator(f, start, end, true_value, sig_fig):
 
     n = 1 # Starting number of subintervals
@@ -90,11 +98,6 @@ This function definition is what passes the function, a, and b to the trapezoid_
 11          2048  1.0056945931   0.00079%
 12          4096  1.0057005553    0.0002%
 13          8192  1.0057020459     5e-05%
-
-
-
-
--Also, need to talk about approximator function and how you determined the cut off for error with that new slideshow you found (maybe include image of the function?).
 
 ### Gaussian Quadrature
 
