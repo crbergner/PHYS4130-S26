@@ -33,13 +33,13 @@ I = \int_0^2 \mathrm{d}x\, \sin^2\left(\sqrt{100x}\right)
 To do this, let us go a little more in depth with the trapezoid rule. We mentioned before that the proportionality of decreasing error for the leftpoint and rightpoint methods are approximately the same. Thus, the point of evaluation should not make much of a difference assuming our width of a subinterval is small and since the errors should be roughly the same in magnitude, but opposite in sign, we can make have a better method of integration by averaging both methods. This is where we get our trapezoid rule. That is, to approximate the integral
 
 ```math
-I = \int_a^b f(x)\,dx\n
+I = \int_a^b f(x)\,dx
 ```
 
 we can do
 
 ```math
-\tI_T = \\frac{1}{2} \\left( I_L + I_R\\right) = \\sum_{i=0}^{N-1} \\frac{1}{2} \\left[ f(a + ih) + f(a + ih + h) \\right] h\n'$
+I_T = \\frac{1}{2} \\left( I_L + I_R\\right) = \\sum_{i=0}^{N-1} \\frac{1}{2} \\left[ f(a + ih) + f(a + ih + h) \\right] h'$
 ```
 
 In my code, I created the following definition
