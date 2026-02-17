@@ -350,7 +350,7 @@ The primary resources for this assignment were the previous jupyter notebooks fo
 
 ## Timekeeping
 
-I would estimate I spent around three to 10 hours on this. About 3 for the code and 7 for the report.
+I would estimate I spent around 10 hours on this. About 3 for the code and 7 for the report.
 
 ## Languages, Libraries, Lessons Learned 
 
