@@ -151,7 +151,7 @@ Where Pn is the nth degree legendre polynomial. Therefore,
 ```
 Orthogonality gurantees that the integral of Q(x)Pn(x) goes to 0, so we obtain
 ```math
-\int_{-1}^{1} S(x) \, dx = \int_{-1}^{1} R(x) \ dx
+\int_{-1}^{1} S(x) \ dx = \int_{-1}^{1} R(x) \ dx
 ```
 We will set that aside for now and consider our approximation. We want our weighted sum over our n quadrature points to exaclty evalaute the integral of S.
 ```math
