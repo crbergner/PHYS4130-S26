@@ -8,14 +8,6 @@ meta:
 
 # Numeric Integration
 
-## Languages, Libraries, Lessons Learned
-
-The primary language for this assignment was Python where we used the libraries scipy, numpy, and pandas. We have consistenly worked in Python from the beginning of this module to the final project. The pandas library was especially useful in creating tables and organizing information. I also learned how to create subplots. I knew you could make a 2x2 grid of plots, but I didn't know you could make sizes up to 4x4, so that was neat. 
-
-## Timekeeping
-
-As of 2/17/26, I have spent 15 hours or so on this project. 
-
 ## Summary of Code
 
 ### Trapezoid section
@@ -155,6 +147,14 @@ Thus, confirming that any integral P(i)*P(j) where i does not equal j is 0.
 ### Extension
 
 -Challenge problem 1 (talked about 2 in guassian quadrature above)
+
+## Languages, Libraries, Lessons Learned
+
+The primary language for this assignment was Python where we used the libraries scipy, numpy, and pandas. We have consistenly worked in Python from the beginning of this module to the final project. The pandas library was especially useful in creating tables and organizing information. I also learned how to create subplots. I knew you could make a 2x2 grid of plots, but I didn't know you could make sizes up to 4x4, so that was neat. 
+
+## Timekeeping
+
+As of 2/17/26, I have spent ~28 hours or so on this project. 
 
 ## Sources
 
