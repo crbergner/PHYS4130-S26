@@ -142,13 +142,13 @@ $$
 \int_{-1}^{1} f(x) \ dx \approx \sum_{i=1}^{n} w_i f(x_i)
 $$
 We demand that this approximation be exact for polynomials of degree less than 2n, so let S be such a polynomial. Then, the divison algorithm lets us express this in the form 
-$$
+```math
 S(x) = Q(x)P_n(x) + R(x)
-$$
+```
 Where Pn is the nth degree legendre polynomial. Therefore,
-$$
+```math
 \int_{-1}^{1} S(x) \ dx = \int_{-1}^{1} Q(x)P_n(x) \dx + \int_{-1}^{1} R(x) \ dx
-$$
+```
 Orthogonality gurantees that the integral of Q(x)Pn(x) goes to 0, so we obtain
 $$
 \int_{-1}^{1} S(x) \, dx = \int_{-1}^{1} R(x) \, dx
