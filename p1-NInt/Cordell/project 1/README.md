@@ -10,15 +10,17 @@ Simpson's method is a weighted average of the midpoint and trapezoid rule where 
 The Guassian quadrature method is a more refined and much more interesting method than any of the previous methods that revolve around Reimann sums. It utilizes Legendre polynomials to represent the integrand. Recall that Legendre polynomials are an orthonormal set of polynomials as shown in Fig. 1, and so they can be used to represent any polynomial exactly. Furthermore, if the integrand isn't a polynomial, Legendre polynomials can still be utilized to approximate it. The Guassian quadrature method approximates the integrand using Legendre polynomials and then integrates the constructed polynomial exactly. This is expressed as: 
 
 ```math
-\int_{-1}^{1} \mathrm{d}x\, f(x) \approx \sum_{i=1}^N c_{N,i} f\left(x_{N,i}\right)                 (1)
+\int_{-1}^{1} \mathrm{d}x\, f(x) \approx \sum_{i=1}^N c_{N,i} f\left(x_{N,i}\right)                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1)
 ```
 
 where $`x_{N,i}`$ are the sample points chosen at the roots of the Legendre polynomials and the weights are given by
 
 ```math
-c_{i,n}=\frac{1}{P_n^{\prime}(x_{N,i})}\int_{-1}^1\frac{P_n(x)}{x-x_{N,i}} \mathrm{d}x                  (2)
+c_{i,n}=\frac{1}{P_n^{\prime}(x_{N,i})}\int_{-1}^1\frac{P_n(x)}{x-x_{N,i}} \mathrm{d}x                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2)
 ```
-
+<br>
+<br>
+<br>
 ![My plot](../Project%201/LegendrePolynomials.png)
 Figure 1: Legendre polynomials subplots of $`P_i`$, $`P_j`$, and $`P_i\cdot P_j`$. There are 16 subplots of Legendre polynomials for i and j in the range 1-4. The area under the curve can be observed for each of the i=j subplots on the diagonal as well as the i $`\neq`$ j subplots off diagonal. The areas under the i = j curves look to be approximately 1. Meanwhile, the areas under the i $`\neq`$ j seem to be about 0. This is the visualization of the integral of $`P_i\cdot P_j`$ from -1 to 1 equals the kroenecker delta function.
 
@@ -33,7 +35,7 @@ python code.py
 It outputs the estimated result of the integral 
 
 ```math
-I = \int_0^2 \mathrm{d}x\, \sin^2\left(\sqrt{100x}\right)                   (3)
+I = \int_0^2 \mathrm{d}x\, \sin^2\left(\sqrt{100x}\right)                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(3)
 ```
 
 using the trapezoid rule along with the error and number of subintervals. Then, it outputs the estimated result using the Simpson rule. Lastly, it outputs these results using the Gaussian quadrature.
@@ -95,3 +97,4 @@ Table 1: Trapezoid and Guassian quadrature estimates of Integral (3) at N subint
 | 256       | 1.00519113947139           | 0.0005114033543400787         | 1.0057025428257265            | 3.552713678800501e-15         |
 | 512       | 1.0055749301202703         | 0.00012761270545968983        | 1.005702542825715             | 1.509903313490213e-14         |
 
+# Extension 1
