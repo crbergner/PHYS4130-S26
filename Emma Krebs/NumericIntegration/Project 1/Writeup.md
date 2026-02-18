@@ -74,7 +74,7 @@ to represent this equation. The definition takes in the parameters func (given f
         return sums
 ```
 
-This function definition is what passes the function, a, and b to the trapezoid_function. It also passes the true value of the integral (calculated through some other method) and the precision to which we want to know the accuracy of the approximation. It tracks the number of subintervals, the apporximated sum of that specific subinterval number, and the error from the true answer. The approximator function will also stop once an accuracy to whatever given significant figure is reached. I changed up my method of calculation for this cutoff from notebook 3. I originally used half the final decimal place of wanted degree of accuracy (ie. 10^-4 accuracy meant 0.00005 was passed). However, this didn't always result in the accuracy we were interested in, so I found a nice slideshow from Illinois.edu that gave me the corrected version we see above. It looks to find when the relative error is less than or equal to 10<sup>-n + 1</sup> where n is the decimal significant figure. An example of this is if relative error is 10<sup>-2</sup> then the approximation of x has at most three significant figures. The approximator calls on error_calc to find this relative error and then compare it to the passed sig_fig value. Since we were interested in accuracy to the 10^-6 degree, I passed 0.00005 as our sig_fig value to get a value within that error. Until it finds that n, it will double the number of subintervals each loop. The result of this is the following table:
+This function definition is what passes the function, a, and b to the trapezoid_function. It also passes the true value of the integral (calculated through some other method) and the precision to which we want to know the accuracy of the approximation. It tracks the number of subintervals, the apporximated sum of that specific subinterval number, and the error from the true answer. The approximator function will also stop once an accuracy to whatever given significant figure is reached. I changed up my method of calculation for this cutoff from notebook 3. I originally used half the final decimal place of wanted degree of accuracy (ie. 10^<sup>-4</sup> accuracy meant 0.00005 was passed). However, this didn't always result in the accuracy we were interested in, so I found a nice slideshow from Illinois.edu that gave me the corrected version we see above. It looks to find when the relative error is less than or equal to 10<sup>-n + 1</sup> where n is the decimal significant figure. An example of this is if relative error is 10<sup>-2</sup> then the approximation of x has at most three significant figures. The approximator calls on error_calc to find this relative error and then compare it to the passed sig_fig value. Since we were interested in accuracy to the 10<sup>-6</sup> degree, I passed 0.00005 as our sig_fig value to get a value within that error. Until it finds that n, it will double the number of subintervals each loop. The result of this is the following table:
 
             Subintervals     Summation   Error(%)
         0              1  0.9999753124   0.56948%
@@ -192,7 +192,51 @@ An example of some of these roots and weights are given in the following table f
 I chose to answer the following question:\
 Why are the optimal points for an $N$ order Gaussian quadrature the zeros of $P_N$?
 
-We can start 
+My work closely followes the PDF AM205: Gaussian quadrature in my sources. Let us start by defining a generic orthogonal polynomial set (not Legendre yet!) such that the inner product takes the form
+```math
+&ltp,q&gt = \int_a^b p(x)q(x)w(x)\,dx
+```
+where w(x) is an arbitrary weight function and for a set of orthogonal polynomials {u<sub>1</sub>, u<sub>2</sub>, etc}:
+
+```math
+\langle u_i, u_j \rangle = 0 \quad \text{for } i \neq j
+```
+Now that we have this paper's definition, we can do the proof.
+
+<ins>Proof.</ins>
+
+Suppose w(x) is an arbitrary weight function and A = {u<sub>1</sub>... u<sub>n</sub>} is the associated orthogonal polynomial set that spans all polynomials of degree &le n. Let u<sub>n+1</sub> be the associared orthogonal polynomial with degree n+1. Now, consider a monomial, or single term expression, x<sup>L</sup> where L &le n. Now, since orthogonal polynomials form a basis, we can write x<sup>L</sup> in terms of A such that
+
+```math
+x^L = \sum_{i=0}^N \gamma_i u_i(x)
+```
+where $\gamma_i$ is a scalar.
+
+Then, we can rewrite 
+```math
+&ltp,q&gt = \int_a^b p(x)q(x)w(x)\,dx
+```
+as
+
+```math
+\implies &ltp,q&gt = \int_a^b x^Lu_{n+1}(x)w(x)\,dx
+```
+
+```math
+\implies &ltp,q&gt = \int_a^b (\sum_{i=0}^N \gamma_i u_i(x))u_{n+1}(x)w(x)\,dx
+```
+where we can rewrite the integrand with our defined inner product if we allow p(x) = u<sub>i</sub>(x) and q(x) = u<sub>n+1</sub>(x) such that
+```math
+\implies \sum_{i=0}^L \gamma_i \langle u_i, u_{n+1} \rangle = 0
+```
+since u<sub>n+1</sub>(x) is orthogonal to the set A, and every u<sub>i</sub>(x) is an element of that set.
+
+Now, let the points of our quadrature x<sub>0</sub>(x), x<sub>1</sub>(x),...,x<sub>n</sub>(x) be our roots for the polynomial u<sub>n+1</sub>(x)  and define our weights as
+
+```math
+w_k = \int_a^b P_k(x)w(x)\,dx
+```
+where P<sub>k</sub>(x) is the k<sup>th</sup>(x) basis polynomial.
 
 ## Languages, Libraries, Lessons Learned
 
