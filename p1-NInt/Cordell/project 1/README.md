@@ -2,6 +2,7 @@
 
 This project demonstrates and explores several numeric integration techniques.
 
+## Background Theory
 The first technique explored is the trapezoid rule. The trapezoid rule takes the average of the leftpoint and rightpoint rules. These methods incorporate Reimann sums which split the area under the curve into N rectangles and adds up the area of each rectangle. The height of each rectangle is typically taken at the left, right, or middle of the rectangle--- hence the names of the rules: leftpoint, rightpoint and midpoint. As one might imagine, the estimate becomes more accurate at higher values of N. Specifically, as N increases the error of leftpoint or rightpoint decreases proportionally to $\frac{1}{N}$ and the error of midpoint or trapezoid decreases proportionally to $\frac{1}{N^{2}}$.
 
 Simpson's method is a weighted average of the midpoint and trapezoid rule where midpoint is weighted by a factor of $\frac{2}{3}$ and the trapezoid is weighted by a factor of $\frac{1}{3}$. It is the most accurate out of the methods so far. As N increases, the error reduces by a factor of $\frac{1}{N^{4}}$.
@@ -17,6 +18,7 @@ where $`x_{N,i}`$ are the sample points chosen at the roots of the Legendre poly
 ```math
 c_{i,n}=\frac{1}{P_n^{\prime}(x_{N,i})}\int_{-1}^1\frac{P_n(x)}{x-x_{N,i}} \mathrm{d}x                  (2)
 ```
+
 
 Code.py is a script that demonstrates the numerical integration techniques discussed above.
 
