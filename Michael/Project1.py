@@ -39,7 +39,7 @@ def GaussQuad(g,a,b,N):
 
 
 # Outputting functions---------------------------------------------------------------------------
-def Table(g,a,b,TrueVal, alg,points): #Plots table of values from the trapezoid rule
+def Table(g,a,b,TrueVal, alg,points): #Plots table of values for alg
 
     print('\n',f"{'Intervals':<12} {'Approx Value':>16} {'Error' :>25}")
     for i in points:
@@ -56,18 +56,15 @@ def PlotStuff(): #Plots the legendre polynomials
         for j in range(4):
             #This was based on Cricket's code
             # make the plots
-            ax[i,j].plot(x, P(i+1,x), label=f'P_{i+1}(x)', color='goldenrod', linewidth=1.75)
+            ax[i,j].plot(x, P(i+1,x), label=f'P_{i+1}(x)', color='goldenrod', linewidth=1.5)
             ax[i,j].plot(x, P(j+1,x), label=f'P_{j+1}(x)', color='purple', linewidth=1.5)
-            ax[i,j].plot(x, P(i+1,x)*P(j+1,x), label='Product', color='#78C3F5', linewidth=2)
+            ax[i,j].plot(x, P(i+1,x)*P(j+1,x), label='Product', color='#78C3F5', linewidth=0.75)
             
-            #labela and stuff
-            ax[i,j].set_xlabel('x', fontsize=8)
-            ax[i,j].set_ylabel('P_n(x)', fontsize=8)
-            ax[i,j].set_title(f'P_{i+1}, P_{j+1}, P_{i+1}·P_{j+1}', fontsize=10)
-            ax[i,j].legend(fontsize=7)
+            #labels and stuff
+            ax[i,j].set_title(f'P{i+1}, P{j+1}, P{i+1}·P{j+1}', fontsize=5)
             ax[i,j].grid(True, alpha=0.3)
             ax[i,j].tick_params(labelsize=7)
-
+    fig.tight_layout()
     py.savefig('legendre')
     py.show()
     return
@@ -79,26 +76,11 @@ def F(g,a,b,u): #This is the transformed function that is to be integrated from 
 def P(n,x):
     return sp.special.legendre(n)(x)
 
-def BisectionRootFinsding(F,lower,upper,value):
-    tol = 0.0000000001
-    guess = (1/2)*(upper + lower)
-
-    while np.abs(F(guess) - value) > tol:
-        if np.sign((F(guess)-value)(F(lower)-value)) == 1:
-            lower = guess
-            guess = (1/2)*(upper + lower)
-
-        elif np.sign((F(guess)-value)(F(upper)-value)) == 1:
-            upper = guess
-            guess = (1/2)*(upper + lower)
-
-    return guess
-
 #Program output--------------------------------------------------------------------------------
 print("\nThe first thing to examine is the number of subinetervals at which the trapezoidal rule converge to 6 sig figs")
 
 print("\nTrapezoid Rule")
-Table(f,0,2,trapezoid(f,0,2,5000000),trapezoid,[2**n for n in range(14)])
+Table(f,0,2,trapezoid(f,0,2,15000000),trapezoid,[2**n for n in range(21)])
 
 print("\n From the table, we see that it reaches 6 digit accuracy somewhere between 4096 and 9192 subintervals.")
 
@@ -129,9 +111,4 @@ Table(G,0,np.pi/2, np.sqrt(8192)/15,Homer,[5*(1+n) for n in range(13)])
 print("\nGaussian Quadrature")
 Table(G,0,np.pi/2, np.sqrt(8192)/15,GaussQuad,[1+n for n in range(11)])
 
-print("\nNow, gaussian quadrature converges to 10 sig figs in 9 intervals, which is a much better than the untransformed integral and slightly better than the 64 for Simpson's rule.")
-
-    return
-    
-print(trapezoid(f,0,2,8192))
-print(GaussQuad(f,0,2,16))
+print("\nNow, gaussian quadrature converges to 10 sig figs in 9 intervals, which is a much better than the untransformed integral and slightly better than the 64 for Simpson's rule.\n")
