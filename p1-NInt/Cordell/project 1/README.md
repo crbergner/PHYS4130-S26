@@ -18,8 +18,7 @@ where $`x_{N,i}`$ are the sample points chosen at the roots of the Legendre poly
 ```math
 c_{i,n}=\frac{1}{P_n^{\prime}(x_{N,i})}\int_{-1}^1\frac{P_n(x)}{x-x_{N,i}} \mathrm{d}x                  (2)
 ```
-
-
+<br>
 Code.py is a script that demonstrates the numerical integration techniques discussed above.
 
 To run the code.py script open the command prompt from the directory you have the it in:
