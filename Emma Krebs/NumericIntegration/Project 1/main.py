@@ -7,6 +7,7 @@
 
 import numpy as np
 from scipy.special import legendre
+import scipy as sp
 import pandas as pd
 import math
 import matplotlib.pyplot as plt
@@ -16,9 +17,9 @@ import matplotlib.pyplot as plt
 '''
     Definition: trapezoid_function
     Parameters: func (Given function), a (Starting point of subdivision), b (Ending point of subdivision),
-        and n (the number of subintevrals).
-    Description: Takes in a function, a starting point, and an ending point and goes through an increasing
-        number of subintervals to come to the closest *********
+        and n (the number of subintervals).
+    Description: This function loops over a range of n subintervals and continously sums using the trapezoid 
+        equation and our given parameters to get the approximate answer of the integral for n subintervals.
 '''
 def trapezoid_function(func, a, b, n):
 
@@ -93,6 +94,28 @@ def u(x, a, b):
 def du(a, b):
     return 2 / (b - a)
 
+
+'''
+    Definition: Legendre_multiplier
+    Parameters: 
+    Description: 
+'''
+def Legendre_multiplier(i, j, x_values):
+    p1 = legendre(i+1)
+    p2 = legendre (j+1)
+
+    u_x_values = u(x_values, min(x_values), max(x_values))
+
+    y = p1(u_x_values) * p2(u_x_values) # Evaulated function for plotting
+    integrand = p1 * p2 # Unevaulated function for integrating
+
+    scale = du(min(u_x_values), max(u_x_values)) 
+
+    integrated_value, _ = sp.integrate.quad(integrand, min(u_x_values), max(u_x_values))
+    integrated_value = integrated_value * scale 
+
+    return y, integrated_value
+
 # ------------------ Main Body ------------------
 
 # For trapezoid section
@@ -108,24 +131,53 @@ print("\nTest for Gaussian Quadrature with a = 1, b = 7, and x = 5")
 print("The starting point 1 becomes: ", u(1, 1, 7))
 print("The ending point 7 becomes: ", u(7, 1, 7))
 print("The test variable 5 becomes: ", u(5, 1, 7))
-print()
+print() # Cheap way to add space
 
 # For Legendre Polynomials
 x = np.linspace(-1, 1, 200) 
 fig, axes = plt.subplots(4, 4, figsize=(10,10)) # Our subplot grid
+
+multiplied_legendre = [] # array to store information for table 
 
 for i in range(4):
     y_1 = legendre(i+1)(x)
 
     for j in range(4):
         y_2 = legendre(j+1)(x)
-        axes[i, j].plot(x, y_1)
-        axes[i, j].plot(x, y_2)
-        title = "P" + str(i) +", P" + str(j)+", P" + str(i) + "*P" + str(j)
+        axes[i, j].plot(x, y_1, label=f'P{i+1}')
+        axes[i, j].plot(x, y_2, label=f'P{j+1}')
+        title = f"P{i+1}, P{j+1}, P{i+1}*P{j+1}"
         axes[i, j].set_title(title, size=8)
-        # axes[i, j].plot(x, y_3)
+        y_3, value = Legendre_multiplier(i, j, x)
+        axes[i, j].plot(x, y_3, label=f'P{i+1}*P{j+1}')
+
+        axes[i, j].set_xlabel('X')
+        axes[i, j].set_ylabel('Legendre Value')
+        axes[i, j].legend(fontsize=5)
+
+        
+        multiplied_legendre.append([f'P{i+1}*P{j+1}', value, round(value, 5)])
+
+dq = pd.DataFrame(multiplied_legendre, columns=['P(i)*P(j)', 'Value', 'Approx. Value'])
+print(dq)
 
 plt.tight_layout()
 plt.show()
+
+roots_array = []
+weights_array = []
+values_array = []
+for N in range(4):
+    roots, weights = sp.special.roots_legendre(N+1)
+    roots_array.append(roots)
+    weights_array.append(weights)
+    values_array.append(N+1)
+
+dg = pd.DataFrame({'P(x)': values_array,'Roots': roots_array, 'Weights': weights_array})
+print(dg)
+
+# ------------------ Extension ------------------
+
+# This section is for extension question 1
 
 
