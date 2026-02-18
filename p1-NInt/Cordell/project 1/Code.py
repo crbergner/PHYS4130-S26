@@ -109,7 +109,9 @@ def quad(a, b, N):
 print("GUASSIAN QUADRATURE: ")
 N_array = [2**k for k in range(1, 10)]
 for i in N_array:
-    print ("N: ", i, "; Guassian quadrature result: ", quad(0, 2, i))
+    num_result = quad(0, 2, i)
+    error = np.abs(num_result - soln)
+    print ("N: ", i, "; Guassian quadrature result: ", num_result, "Error: ", error)
 
 # Legendre polynomial plots
 
