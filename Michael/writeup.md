@@ -2,11 +2,11 @@
 # Project 1 
 
 ## Introduction
-Often, the integrals we encounter outside of a classroom do not have closed forms. This neccessitates the development of efficient and accurate numeriacl methods for evaluating integrals. In this project we examine a numeric integration algorithm known as Gaussian Quadrature and compare to two previously studied methods methods: the Trapezoidal Rule and Simpson's rule. The derivation of Gaussian Quadrature is presented, and two of its use cases are explored to demonstrate its advantages.
+Often, the integrals we encounter outside of a classroom do not have closed forms. This necessitates the development of efficient and accurate numerical methods for evaluating integrals. In this project we examine a numeric integration algorithm known as Gaussian Quadrature and compare it to two previously studied methods: the Trapezoidal Rule and Simpson's Rule. The derivation of Gaussian Quadrature is presented, and two of its use cases are explored to demonstrate its advantages.
 
 ## Algorithms and Theory
-There are three primary algorithms used in this project. The first of which is the trapezoidal rule. It works by approximating a function as a line over a subinterval and thus the area underneath as a trapezoid. The implementation below is taken from a previous jupyter notebook.
-```python
+There are three primary algorithms used in this project. The first of which is the Trapezoidal Rule. It works by approximating a function as a line over a subinterval and thus the area underneath as a trapezoid. The implementation below is taken from a previous jupyter notebook.
+```Python
 def trapezoid(f,a,b,N):
     h = (b-a)/N #Interval size
     mysum = 0
@@ -15,8 +15,8 @@ def trapezoid(f,a,b,N):
         mysum = mysum + float(f(a+(i)*h)*h) 
     return mysum +(h/2)*(f(a) + f(b))
 ```
-The order of arguments in this function (and all other intgeration algoriths) is as follows: integrad, lower limit, upper limit, and number of subintervals/quadrature points. The second algorithm is Simpson's rule. It works by combining the midpoint and trapezoidal rule in a weighted sum to cancel oout lower order errors. The implementation below is taken also from a previous jupyter notebook.
-```python
+The order of arguments in this function (and all other integration algorithms) is as follows: integrand, lower limit, upper limit, and number of subintervals/quadrature points. The second algorithm is Simpson's Rule. It works by combining the midpoint and Trapezoidal Rule in a weighted sum to cancel out lower order errors. The implementation below is taken also from a previous jupyter notebook.
+```Python
 def midpoint(f,a,b,N):
     h = (b-a)/N 
     mysum = 0
@@ -28,7 +28,7 @@ def midpoint(f,a,b,N):
 def Simpson(f,a,b,N): 
         return (1/3)*trapezoid(f,a,b,N) + (2/3)*midpoint(f,a,b,N)
 ```
-Tha main algorithm of interest is Gaussian Quadrature. It is unique because a Gaussian Quadrature of order n will be exact for all polynomials of degree less than 2n. We will soon derive it, but first we should resfresh outselves on the Legndre polynomials. They are a set of polynomials that are orthogonal on the interval [-1,1]. The first four are plotted below, as well as their products. 
+The main algorithm of interest is Gaussian Quadrature. It is unique because a Gaussian Quadrature of order n will be exact for all polynomials of degree less than 2n. We will soon derive it, but first we should resfresh ourselves on the Legendre polynomials. They are a set of polynomials that are orthogonal on the interval [-1,1]. The first four are plotted below, as well as their products. 
 
 <div align="center">
   <img src="legendre.png" alt="Legendre polynomial plots" width="600">
@@ -41,7 +41,7 @@ These plots visually demonstrate the orthogonality condition for the Legendre po
 \int_{-1}^{1} P_n(x)P_m(x) dx = \frac{2}{2n+1}\ \delta_{nm}
 ```
 
-In order to take advantage of the orthogonality conditon in building our algorithm, we want to transform our integral onto the interval [-1,1]. This can be done in general for any integral in the following way.
+In order to take advantage of the orthogonality condition in building our algorithm, we want to transform our integral onto the interval [-1,1]. This can be done in general for any integral in the following way.
 
 Let
 ```math
@@ -65,21 +65,21 @@ We combine this and get our transformation.
 }
 ```
 
-The existence of this transformation allows us to build the Gaussian Quadrature algorithm with respect to integrals on [-1,1]. The derivation presented here is scaffolded from the one presented by Jeremy Tatum on Libre Texts. It starts with some preliminary results.
+The existence of this transformation allows us to build the Gaussian Quadrature algorithm with respect to integrals on [-1,1]. The derivation presented here is scaffolded from the one presented by Jeremy Tatum on LibreTexts. It starts with some preliminary results.
 
-We first recall polynomial division. Let P be a polynomial of degree n, and let S be a polynomial of degree 2n. Then, the polynomial division S(x)/P(x) has the form
+We first recall polynomial division. Let P be a polynomial of degree n, and let S be a polynomial of degree 2n. Then, the polynomial divison S(x)/P(x) has the form
 ```math
 \frac{S(x)}{P(x)} = Q(x) + \frac{R(x)}{P(x)}.
 ```
 Where the quotient, Q, and the remainder, R, each have a degree less than n.
 
-Then, the next result is a consequecnce of orthogonality. For the Legendre polynomial of degree m and any polynomial Q of degree less than m,
+Then, the next result is a consequence of orthogonality. For the Legendre polynomial of degree m and any polynomial Q of degree less than m,
 ```math
 \int_{-1}^{1} P_m(x)Q(x) dx = 0.
 ```
 This is because the Legendre polynomials of degree less than m form an orthogonal basis for the set of polynomials with degree less than m on the interval [-1,1].
 
-Finally, we need to discuss Lagrange polynomials because they are used in the very end of the derivation. If we have n known points of a function, then a polynomial approximation of degree n-1 can be constructed with the formula
+Finally, we need to discuss Lagrange polynomials because they are used in the very end of the derivation. If we have n known points of a function, then a polynomial approximation of degree n - 1 can be constructed with the formula
 ```math
 f(x) \approx \sum_{i=1}^{n} f(x_i)L_i(x).
 ```
@@ -111,7 +111,7 @@ Orthogonality guarantees that the integral of Q(x)Pn(x) goes to 0, so we obtain
 ```math
 \int_{-1}^{1} S(x) dx = \int_{-1}^{1} R(x) dx.
 ```
-We will set that aside for now and consider our approximation. We want our weighted sum over our n quadrature points to exaclty evalaute the integral of S.
+We will set that aside for now and consider our approximation. We want our weighted sum over our n quadrature points to exactly evaluate the integral of S.
 ```math
 \int_{-1}^{1} S(x) dx = \sum_{i=1}^{n} w_i S(x_i) = \sum_{i=1}^{n} w_i (Q(x_i)P_n(x_i) + R(x_i))
 ```
@@ -123,7 +123,7 @@ We now equate our two forms for the integral to yield
 ```math
 \int_{-1}^{1} R(x) dx =  \sum_{i=1}^{n} w_i  R(x_i).
 ```
-The important observation at this step is that we have converted the problem from inegrating a polynomial of degree up to 2n - 1 with n quadrature points into an integral of an at most degree n - 1 polynomial and n quadrature points. R therefore has an exact representation in terms of the Lagrange polynomials with our n sample points.
+The important observation at this step is that we have converted the problem from integrating a polynomial of degree up to 2n - 1 with n quadrature points into an integral of an at most degree n - 1 polynomial and n quadrature points. R therefore has an exact representation in terms of the Lagrange polynomials with our n sample points.
 
 By construction
 ```math
@@ -143,11 +143,11 @@ By moving the integral into the sum and equating terms, we at last determine a f
 w_i = \int_{-1}^{1} L_i(x) dx = \frac{2}{(1-x_i^2)P'_i(x_i)^2}
 }
 ```
-Where that last equality is determined using algebra and properties of Legendre polynomials. It is omitted here becausee it does not demonstrate the important ideas of Gaussian Quadrature. It is interesting that our weights are completley independent of our integrand. They only depend on the sample points, which are determined by the order of quadrature we have chosen. We therefore only ever have to calculate these roots and weights one time, and we can then reuse them at no additonal computational cost for future implementations.
+Where that last equality is determined using algebra and properties of Legendre polynomials. It is omitted here because it does not demonstrate the important ideas of Gaussian Quadrature. It is interesting that our weights are completely independent of our integrand. They only depend on the sample points, which are determined by the order of quadrature we have chosen. We therefore only ever have to calculate these roots and weights one time, and we can then reuse them at no additional computational cost for future implementations.
 
-We constrcuted this algorithm to be exact for polynomials up to degree 2n - 1 for n quadrature points. Therefore, if an arbitrary function is well approximated on an interval by a polynomial of degree 2n - 1 for some n, then we can be reasonably certain that guassian quadrature of order n will approximate the integral of the function on that interval. In general, reasonably well-behaved functions should then be better approximated as we make n large because they admit taylor approximations of any order.
+We constructed this algorithm to be exact for polynomials up to degree 2n - 1 for n quadrature points. Therefore, if an arbitrary function is well approximated on an interval by a polynomial of degree 2n - 1 for some n, then we can be reasonably certain that Gaussian Quadrature of order n will approximate the integral of the function on that interval. In general, reasonably well-behaved functions should then be better approximated as we make n large because they admit Taylor approximations of any order.
 
-Finally, Gaussian Quadrature can be implemented in just a few lines in python because Scipy contains the roots and weights for the Legendre polynomials. Here is the implementation.
+Finally, Gaussian Quadrature can be implemented in just a few lines in Python because Scipy contains the roots and weights for the Legendre polynomials. Here is the implementation.
 ```Python
 def GaussQuad(f,a,b,N):
     roots, weights = sp.special.roots_legendre(N)
@@ -161,7 +161,7 @@ An interesting thing to examine for a numerical method is the rate at which it c
 ```math
 f(x) = \sin(\sqrt{100 x})
 ```
-integrated over the interval [0,2] using the trapezoid rule. When we let the number of subintervals grow expoenentially, we get the following results. (see appendix for function that generates tables)
+integrated over the interval [0,2] using the trapezoid Rule. When we let the number of subintervals grow exponentially, we get the following results. (see appendix for function that generates tables)
 
     Trapezoid Rule
 
@@ -188,7 +188,7 @@ integrated over the interval [0,2] using the trapezoid rule. When we let the num
         524288        1.0057025427    0.00000000012098344548
        1048576        1.0057025428    0.00000000003001798810
 
-We see that, roughly speaking, to gain an extra decimal of precision we have to double the number intervals each time. At some point between 524288 and 1048576 we achieved 10 decimal precision. This does not take terribly long to do computationally, but there are improvements to be made.
+We see that, roughly speaking, to gain an extra decimal of precision we have to double the number of intervals each time. At some point between 524288 and 1048576 we achieved 10 decimal places of precision. This does not take terribly long to do computationally, but there are improvements to be made.
 
 On the contrary, when we tabulate the results of Gaussian Quadrature for a few points, we get the following.
 
@@ -210,13 +210,13 @@ On the contrary, when we tabulate the results of Gaussian Quadrature for a few p
            13        1.0057025431    0.00000000025312063556
            14        1.0057025428    0.00000000000154765090
 
-It is immediatley obvious that at just 14 subintervals this algorithm achieves 11 decimal places of precision. This is a signifigant improvement to the 1048576 needed for the trapezoidal rule to have 10 decimal places of precision.
+It is immediately obvious that at just 14 subintervals this algorithm achieves 11 decimal places of precision. This is a significant improvement to the 1048576 needed for the Trapezoidal Rule to have 10 decimal places of precision.
 
 One thing that distinguishes Gaussian Quadrature from other integration algorithms is that it never evaluates at the limits of integration. This makes it worthwhile to experiment with a function that has a singularity at one of its limits of integration. So, consider
 ```math
 \int_{0}^{2}\frac{y^2}{\sqrt{2-y}} \ dy.
 ```
-The integrand diverges at y = 2, however, the integral is know to converge to 
+The integrand diverges at y = 2, however, the integral is known to converge to 
 ```math
 \frac{\sqrt{8192}}{15} \approx 6.03398.
 ```
@@ -238,9 +238,9 @@ When we run it through some test values for Gaussian Quadrature, we obtain the f
          1024        6.0291702836    0.00480758256002555839
          2048        6.0315734888    0.00240437735766096949
 
-We can still observe the algorithm converging. Unfortunatley, however, it now takes thousands of intervals to achieve just 2 decimal precision. If we try to obtain even higher precision, then the run time to skyrockets and it takes increasingly long times to compute. It is clear, however, that the number of quadrature points needed to achieve 10 decimal precision would be much larger than 100000, potentially even larger than 1000000000. 
+We can still observe the algorithm converging. Unfortunately, however, it now takes thousands of intervals to achieve just 2 decimal places of precision. If we try to obtain even higher precision, the run time skyrockets and it takes increasingly long times to compute. It is clear, however, that the number of quadrature points needed to achieve 10 decimal precision would be much larger than 100000, potentially even larger than 1000000000. 
 
-This happens because Gaussian quadrature requires the existence of a good polynomial approximation on the entire interval of integration. Howevever, no polynomial can approximate a singularity. Polynomial approximations of the integrand get closer to the behavior at y = 2 as the degree increases, but there is not finite degree where that approximation becomes good for all neighborhoods about y = 2.
+This happens because Gaussian Quadrature requires the existence of a good polynomial approximation on the entire interval of integration. However, no polynomial can approximate a singularity. Polynomial approximations of the integrand get closer to the behavior at y = 2 as the degree increases, but there is not finite degree where that approximation becomes good for all neighborhoods about y = 2.
 
 Thankfully, all is not lost. We can transform this integral to remove the singularity at the upper limit.
 
@@ -312,7 +312,7 @@ Now, we can use Gaussian Quadrature on this transformed integral.
             9        6.0339778661    0.00000000002912692310
            10        6.0339778661    0.00000000000030109248
 
-This has clearly recovered the efficiency we saw before, achieving 10 decimal precision at 9 quadrature points. We've established that Gaussian Quadrature outperforms the trapezoidal rule already, so we will now compare its results for this integral to Simpson's rule.
+This has clearly recovered the efficiency we saw before, achieving 10 decimal precision at 9 quadrature points. We've established that Gaussian Quadrature outperforms the Trapezoidal Rule already, so we will now compare its results for this integral to Simpson's Rule.
 
     Simpson's Rule
     
@@ -328,15 +328,15 @@ This has clearly recovered the efficiency we saw before, achieving 10 decimal pr
             45        6.0339778662    0.00000000002540812005
             50        6.0339778661    0.00000000001350031198
 
-To achieve the same precision as Gaussian Quadrature, Simpson's rule needed 35 intervals. This is still an improvement over the trapezoidal rule, but not quie as good as Gaussian Quadrature. Furthermore, this algorithm and the trapezoidal rule would have been compeletely unable to evaluate this integral without the subsistituion because they evaluate at the endpoints whereas Gaussian Quadrature does not.
+To achieve the same precision as Gaussian Quadrature, Simpson's Rule needed 35 intervals. This is still an improvement over the Trapezoidal Rule, but not quite as good as Gaussian Quadrature. Furthermore, this algorithm and the Trapezoidal Rule would have been completely unable to evaluate this integral without the substitution because they evaluate at the endpoints whereas Gaussian Quadrature does not.
 
 ## Conclusion
 
-We have seen that Gaussian Quadrature has signifigant advantages over the Trapezoidal rule and Simpson's rule. It requires demonstrably less evaluation points to achieve similar levels of precision, and it can handle integrals with singularities at the limits, alebit with slower convergence. Furthermore, the access to pre-computed roots and weights makes the implementation in python simple, making this algorithm a useful tool for numeric integration.
+We have seen that Gaussian Quadrature has significant advantages over the Trapezoidal Rule and Simpson's Rule. It requires demonstrably less evaluation points to achieve similar levels of precision, and it can handle integrals with singularities at the limits, albeit with slower convergence. Furthermore, the access to pre-computed roots and weights makes the implementation in Python simple, making this algorithm a useful tool for numeric integration.
 
 ## Attribution
 
-The primary resources for this assignment were the previous jupyter notebooks for numeric integration. They contained useful examples of looping, plotting, and other relevant syntax for python. When they did not suffice, internet resources were used. For example, if I wanted to learn how to format an axis in a plot with pylab, I would search something to the effect of "How to format axes in pylab?" and then usually the first few results would have the information I needed. Also, Cricket was helpful in formatting the Legendre polynomial plots. Lastly, Jeremy Tatum's derivation of Gaussian Quadrature was a scaffold for the full derivation presented here.
+The primary resources for this assignment were the previous jupyter notebooks for numeric integration. They contained useful examples of looping, plotting, and other relevant syntax for Python. When they did not suffice, internet resources were used. For example, if I wanted to learn how to format an axis in a plot with pylab, I would search something to the effect of "How to format axes in pylab?" and then usually the first few results would have the information I needed. Also, Cricket was helpful in formatting the Legendre polynomial plots. Lastly, Jeremy Tatum's derivation of Gaussian Quadrature was a scaffold for the full derivation presented here.
 
 ## Timekeeping
 
@@ -344,12 +344,12 @@ I would estimate I spent around 10 hours on this. About 3 for the code and 7 for
 
 ## Languages, Libraries, Lessons Learned 
 
-The only language use was python becuase thus far everything has been in python. I only know it and C++, and I did not want to use C++. The libraries were numpy, scipy, and matplotlib.pyplot. The first two were simple to use. However, I had trouple getting the plotting to work because I didn't know I had to import matplotlib.pyplot and not just matplotlib. I have also learned that Latex math mode in markdown on VS Code is subtly but annoying different from the version on GitHub.
+The only language used was Python because thus far everything for this class has been in Python. I only know it and C++, and I did not want to use C++. The libraries were numpy, scipy, and matplotlib.pyplot. The first two were simple to use. However, I had trouble getting the plotting to work because I didn't know I had to import matplotlib.pyplot and not just matplotlib. I have also learned that LaTex math mode in markdown on VS Code is subtly but annoyingly different from the version on GitHub.
 
 ## Appendix
 
-This function is used to create a formatted table of the subinterval count, the integral, and the error. It takes in an integrand, the upper and lower limits, the true value of the integral, and integration algorithm, and a list of for the different numbers of points to evaluate at.
-```python
+This function is used to create a formatted table of the subinterval count, the integral, and the error. It takes in an integrand, the upper and lower limits, the true value of the integral, the true value of the integral, an integration algorithm, and a list of the different numbers of points to evaluate.
+```Python
 def Table(g,a,b,TrueVal, alg, points): 
 
     print('\n',f"{'Intervals':<12} {'Approx Value':>16} {'Error' :>25}")
