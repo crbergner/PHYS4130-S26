@@ -1,0 +1,77 @@
+# import libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+# initialize variables
+x = 2
+df = lambda x: (-np.sin(x) * np.tanh(x)) + (np.cos(x) * (1/np.cosh(x))**2)
+df_actually = df(x)
+
+h = [10**(-1), 10**(-2), 10**(-3), 10**(-4), 10**(-5), 10**(-6), 10**(-7)]
+f_error = np.zeros(len(h))
+b_error = np.zeros(len(h))
+
+# define important functions
+def forward(f, h):
+    return (f(x + h) - f(x)) / h
+
+def backward(f, h):
+    return (f(x) - f(x - h)) / h
+
+# loops to fill arrays
+for j, hi in enumerate(h):
+    fwd = forward(lambda x: np.cos(x) * np.tanh(x), hi)
+    bkwd = backward(lambda x: np.cos(x) * np.tanh(x), hi)
+
+    f_error[j] = np.abs(fwd - df_actually)
+    b_error[j] = np.abs(bkwd - df_actually)
+
+# plots
+m_fwd, _ = np.polyfit(np.log(h), np.log(f_error), 1)
+m_bwd, _ = np.polyfit(np.log(h), np.log(b_error), 1)
+
+plt.loglog(h, f_error, label=f'Forward (slope ≈ {m_fwd:.2f})', color = 'red')
+plt.xlabel('h')
+plt.ylabel('Error')
+plt.legend()
+plt.show()
+
+plt.loglog(h, b_error, label=f'Backward (slope ≈ {m_bwd:.2f})', color = 'pink')
+plt.xlabel('h')
+plt.ylabel('Error')
+plt.legend()
+plt.show()
+
+############################################
+# making the h array bigger
+h = np.array([10**(-i) for i in range(1, 15)])
+f_error = np.zeros(len(h))
+b_error = np.zeros(len(h))
+
+# for loop that fills the empty arrays
+for j, hi in enumerate(h):
+    fwd = forward(lambda x: np.cos(x) * np.tanh(x), hi)
+    bkwd = backward(lambda x: np.cos(x) * np.tanh(x), hi)
+
+    f_error[j] = np.abs(fwd - df_actually)
+    b_error[j] = np.abs(bkwd - df_actually)
+
+# plots
+m_fwd, _ = np.polyfit(np.log(h), np.log(f_error), 1)
+m_bwd, _ = np.polyfit(np.log(h), np.log(b_error), 1)
+
+plt.loglog(h, f_error, label=f'Forward (slope ≈ {m_fwd:.2f})', color = 'green')
+plt.xlabel('h')
+plt.ylabel('Error')
+plt.legend()
+plt.show()
+
+plt.loglog(h, b_error, label=f'Backward (slope ≈ {m_bwd:.2f})', color = 'blue')
+plt.xlabel('h')
+plt.ylabel('Error')
+plt.legend()
+plt.show()
+
+############################################
+print("The slope stops being linear when h gets smaller than 10^-7.")
+############################################
