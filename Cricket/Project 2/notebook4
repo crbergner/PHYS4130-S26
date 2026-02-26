@@ -126,49 +126,25 @@ plt.show()
 # printing the derivative values
 print("")
 print(f'The five point centered stencil approximation is {five}, as compared to the actual derivative value of {df_actually}.')
+# I solved for a = 1/12h, b = -2/3h, c = 0, d = 2/3h, and e = -1/12h. This made an approximation for $f'(x) = (f(x-2h) -8f(x+h) + 8f(x+h) -f(x+2h)) / (12h)$.
 ##############################################
-# # initialize variables this time with fixed h, variable x
-# h = 0.01
-# x = np.arange(2.0, 5.0 + h, h)
-# d2f = lambda x: (-( 1 / (x**2 * np.cosh(x))) - ((2 * np.sinh(x)) / (x * np.cosh(x)**2)) - ((np.log(x)) / (np.cosh(x))) + ((2 * np.log(x) * np.sinh(x)**2) / (np.cosh(x)**3)))
-# d2f_actually = d2f(x)
-
-# # define important functions
-# def d2f_potentially(f, x):
-#    return ((f(x + h) -2 * f(x) + f(x - h)) / h**2)
-
-# # plots
-# plt.loglog(x, d2f_potentially, color = 'goldenrod')
-# plt.xlabel('Value of x')
-# plt.ylabel('Second Derivative Approximation')
-# plt.legend()
-# plt.show()
-
-# # printing the derivative values
-# print("")
-# print(f'The three point centered stencil approximation is {d2f_potentially}, as compared to the actual derivative value of {d2f_actually}.')
-
-# step size and grid
+# initialize variables
 h = 0.01
 x = np.arange(2.0, 5.0 + h, h)
-
-# function
-def f(x):
-    return np.log(x) / np.cosh(x)
+f = lambda x: np.log(x) / np.cosh(x)
 
 # three-point centered stencil for second derivative
-fpp = (f(x[2:]) - 2*f(x[1:-1]) + f(x[:-2])) / h**2
+d2f = (f(x[2:]) - 2*f(x[1:-1]) + f(x[:-2])) / h**2
 x_mid = x[1:-1]
 
 # plot
-plt.plot(x_mid, fpp, color='goldenrod')
+plt.plot(x_mid, d2f, color='goldenrod')
 plt.xlabel('x')
 plt.ylabel("f''(x)")
-plt.title("Second derivative of ln(x)/cosh(x)")
 plt.show()
+
 
 ##############################################
 
-# what's left?
-# add in table in HW1
-# polish HW 2.3
+# For the limits, cosh(x) grows like x^2 and ln(x) grows slowly, while the function itself approaches zero as x increases. Thus, f''(x) should also decay as x increases. The curve is smooth (not oscillating), so the stencil is working correctly. This makes sense because the function is infinitely differentiable when x > 0. We also do not see the jagged edges caused by certain h values from the previous plots. 
+
