@@ -1,13 +1,3 @@
-# # import important libraries 
-# import numpy as np
-# import math as m
-# import matplotlib.pyplot as plt
-
-# # initialize variables
-# x = 2
-# df = 
-# df_actually = lambda x: (-np.sin(x) * np.tanh(x)) + (np.cos(x) * np.sech(x))
-
 # import libraries
 import numpy as np
 import matplotlib.pyplot as plt
@@ -52,7 +42,10 @@ plt.ylabel('Error')
 plt.legend()
 plt.show()
 
-############################################
+# printing the derivative values
+print("")
+print(f'The forward derivative is {fwd} and the backward derivative is {bkwd}, as compared to the actual value of {df_actually}.')
+##############################################
 # making the h array bigger
 h = np.array([10**(-i) for i in range(1, 15)])
 f_error = np.zeros(len(h))
@@ -81,11 +74,7 @@ plt.xlabel('h')
 plt.ylabel('Error')
 plt.legend()
 plt.show()
-
-############################################
-print("The slope stops being linear when h gets smaller than 10^-7.")
-############################################
-
+##############################################
 # intialize variables
 h = np.array([10**(-i) for i in range(1, 6)])
 c_error = np.zeros(len(h))
@@ -100,15 +89,18 @@ for j, hi in enumerate(h):
     c_error[j] = np.abs(cent - df_actually)
 
 # plots
-m_cent, _ = np.polyfit(np.log(h), np.log(c_error), 1)
+m_cent, _ = np.polyfit(np.log(h**2), np.log(c_error), 1)
 
-plt.loglog(h, c_error, label=f'Central (slope ≈ {m_cent:.2f})', color='purple')
-plt.xlabel('h')
+plt.loglog(h**2, c_error, label=f'Central (slope ≈ {m_cent:.2f})', color='purple')
+plt.xlabel('h^2')
 plt.ylabel('Error')
 plt.legend()
 plt.show()
-############################################
 
+# printing the derivative value
+print("")
+print(f'The central difference derivative is {cent}, as compared to the actual value of {df_actually}.')
+##############################################
 # intialize variables
 h = np.array([10**(-i) for i in range(1, 4)])
 fi_error = np.zeros(len(h))
@@ -130,4 +122,53 @@ plt.xlabel('h^4')
 plt.ylabel('Error')
 plt.legend()
 plt.show()
-############################################
+
+# printing the derivative values
+print("")
+print(f'The five point centered stencil approximation is {five}, as compared to the actual derivative value of {df_actually}.')
+##############################################
+# # initialize variables this time with fixed h, variable x
+# h = 0.01
+# x = np.arange(2.0, 5.0 + h, h)
+# d2f = lambda x: (-( 1 / (x**2 * np.cosh(x))) - ((2 * np.sinh(x)) / (x * np.cosh(x)**2)) - ((np.log(x)) / (np.cosh(x))) + ((2 * np.log(x) * np.sinh(x)**2) / (np.cosh(x)**3)))
+# d2f_actually = d2f(x)
+
+# # define important functions
+# def d2f_potentially(f, x):
+#    return ((f(x + h) -2 * f(x) + f(x - h)) / h**2)
+
+# # plots
+# plt.loglog(x, d2f_potentially, color = 'goldenrod')
+# plt.xlabel('Value of x')
+# plt.ylabel('Second Derivative Approximation')
+# plt.legend()
+# plt.show()
+
+# # printing the derivative values
+# print("")
+# print(f'The three point centered stencil approximation is {d2f_potentially}, as compared to the actual derivative value of {d2f_actually}.')
+
+# step size and grid
+h = 0.01
+x = np.arange(2.0, 5.0 + h, h)
+
+# function
+def f(x):
+    return np.log(x) / np.cosh(x)
+
+# three-point centered stencil for second derivative
+fpp = (f(x[2:]) - 2*f(x[1:-1]) + f(x[:-2])) / h**2
+x_mid = x[1:-1]
+
+# plot
+plt.plot(x_mid, fpp, color='goldenrod')
+plt.xlabel('x')
+plt.ylabel("f''(x)")
+plt.title("Second derivative of ln(x)/cosh(x)")
+plt.show()
+
+##############################################
+
+# what's left?
+# add in table in HW1
+# polish HW 2.3
