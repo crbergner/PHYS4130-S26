@@ -134,3 +134,55 @@ def Odeint_solver(y_0, w, damp, tmin, tmax, number_steps):
     N = odeint(Harmonic_deriv, y_0, t, args=(w, damp), tfirst=True)
     
     return t, N
+
+
+def find_key(dict, value):
+    """
+    Grabs the key for a given value. This is used for labeling of graphs.
+
+    Args: 
+        dict (dictionary): Dictionary for the inputs to our solvers.
+        value (array of int/floats): The key's value we are searching for.
+    
+    Returns:
+        string: Returns either the key, or if there is no key, None. 
+    
+    """
+
+    for key, val in dict.items():
+        if val == value:
+            return key
+    return None
+
+
+def Total_energy(array_x, array_p, w):
+
+    """
+    This function definition returns the kinetic, potential, and total energy for a given 
+    array of x and p (along with their angular frequency) for a harmonic oscillator.
+
+    Args:
+        array_x (array): Array of x positions
+        array_p (array): Array of p momentums
+        w (int.float): Angular frequency
+
+    Returns:
+        Three arrays: Kinetic, potential, and total energy arrays
+        
+    """
+
+    kinetic_energy = []
+    potential_energy = []
+    total_energy = []
+    
+    # Assuming m = 1, we can find the kinetic, potential, and total energy through the following methods
+    for x, p in array_x, array_p:
+        KE_value = (1/2) * p**2
+        PE_value = (1/2) * w**2 * x**2 # Since w is angular frequency and m = 1, so k = w**2
+        TE_value = KE_value + PE_value
+
+        kinetic_energy.append(KE_value)
+        potential_energy.append(PE_value)
+        total_energy.append(TE_value)
+    
+    return kinetic_energy, potential_energy, total_energy

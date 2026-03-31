@@ -11,24 +11,6 @@ import ODE_Methods
 import matplotlib.pyplot as plt
 
 
-def find_key(dict, value):
-    """
-    Grabs the key for a given value. This is used for labeling of graphs.
-
-    Args: 
-        dict (dictionary): Dictionary for the inputs to our solvers.
-        value (array of int/floats): The key's value we are searching for.
-    
-    Returns:
-        string: Returns either the key, or if there is no key, None. 
-    
-    """
-
-    for key, val in dict.items():
-        if val == value:
-            return key
-    return None
-
 # ------------------ Symplectic Euler Solver ------------------
 
 # Let us create a dictionary for our possible situations.
@@ -110,5 +92,24 @@ plt.grid()
 plt.show()
 
 # ----------------- Considering Error -------------------------
+
+# How do these graphs compare against each other? Let us take the w = 1 and damp = 0.5 cases.
+t_array_ode, N_array_ode = ODE_Methods.Odeint_solver((1, 1), 1, 0.5, 0, 15, 300) # Odeint
+x_array_rk, p_array_rk, t_array_rk = ODE_Methods.RK45_solver((1, 1), 1, 0.5, 0, 15, 0.05) # RK45
+x_array_symp, p_array_symp = ODE_Methods.Symplectic_Euler(1, 1, 1, 0.05, 300, 0.5) # Symplectic 
+
+plt.plot(N_array_ode[:,0], N_array_ode[:,1], label='Odeint')
+plt.plot(x_array_rk, p_array_rk, label='RK45')
+plt.plot(x_array_symp, p_array_symp, label='Symplectic')
+
+plt.title('Comparing Three Methods using w=1 and damp=0.5')
+plt.legend()
+plt.grid()
+plt.show()
+
+# Compare total mechanical energy
+kinetic_symp, potential_symp, total_symp = Total_energy(x_array_symp, p_array_symp, 0.5)
+
+# -------------------- Extensions -----------------------------
 
 
