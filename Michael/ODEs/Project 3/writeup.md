@@ -235,11 +235,17 @@ plt.plot(t, PhaseVolumes, label = "Velocity Verlet")
 ```
 We can see how these different methods affect phase space. 
 
-(Show plot of phase volum  vs time for the 4 different methods)
+<div align="center">
+  <img src="SHO_Volume.png" alt="Undamped Phase Volumes" width="600">
+  <p><em>Figure 5:</em> Plots of the phasae space volums over time for the undamped SHO for three different integrators.</p>
+</div>
 
 The two symplectic methods seem to be conserving phase space volume while the others are accumulating more error as the simulation continues! Now, let's see what happens when damping is introduced.
 
-(Show plot for the damped phase volume)
+<div align="center">
+  <img src="SHO_Damped_Volume.png" alt="Damped Phase Volumes" width="600">
+  <p><em>Figure 5:</em> Plots of the phasae space volums over time for the damped SHO for three different integrators.</p>
+</div>
 
 Now, all methods have the volume decaying to zero. This is not surprising of course. This system no longer conserves energy, and all initial conditions should tend towards the zero energy state at the origin. So, since all points get closer over time, the phase space area will decrease.
 
