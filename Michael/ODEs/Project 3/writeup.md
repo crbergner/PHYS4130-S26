@@ -184,7 +184,10 @@ Let's first look at how the this system evolves over time with no damping for th
 
 We can see that this traces out an ellipse in phase space, which is what we expect for the analytic solution for system. However, these methods are not outputting the exact same trajectory in phase space. You can resolve the difference by zooming in the plot range, but this is a good oppurtunitty to see how the total mechanical enerergy of this system evolves with the different methods. Physically, we know that it should be conserved because spring forces are conservative, but that is not exactly the case for these methods.
 
-(show plot of energy vs time to compare the methods)
+<div align="center">
+  <img src="SHO_Energy.png" alt="Undamped Energies" width="600">
+  <p><em>Figure 1:</em> Plots of the energies for the undamped SHO for three different integrators.</p>
+</div>
 
 This shows a large distinction among the methods! We see that the symplectic method oscillates near the true energy, whle the RK4(5) and LSODA methods accumulate error over time that causes them to drift from the true solution. For that reason, the symplectic Veleocity Verlet might be considered better for this problem despite being a lower order method. Now, we can introduce damping to this system and see how that affects the numeriacl solutions. 
 
