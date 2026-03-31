@@ -148,6 +148,10 @@ The first system that we will investigate the simple harmonic oscillator with an
 
 (LaTex to depict the ODE for the system, then show the coupled 1st order system)
 
+```math
+\ddot{x} + \frac{b}{m} \dot{x} + \frac{k}{m} x = 0
+```
+
 For the way my code is configured, we need to express the derivatives of the system in a specfic way.
 ```python
 
