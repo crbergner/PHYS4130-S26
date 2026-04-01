@@ -268,7 +268,7 @@ V0 = [[0,0], [0,1], [0,-1], [-1,0], [1,0]]    # Initial Velocities
 We have enough particles in this simulation to test the virial theorem. For a gravtiationally bound system, it related the averaeg kinetic and potential energy.
 
 ```math
-<T> = -frac{1}{2} <U>
+\langle T \rangle = -\frac{1}{2} \langle U \rangle
 ```
 
 Let's first see how the kinetic and potential energy evolves over time 
