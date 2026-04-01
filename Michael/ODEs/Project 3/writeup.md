@@ -296,7 +296,10 @@ Which is pretty close to the -1/2 we would expect, so we can be reasonably sure 
 (Idea to inclulde in this section: Which integrator is the best? There is not one that is objectively better than the others. The one that you choose depends on the the problem you are trying to solve and the context of your field.)
 
 ## Attribution
+The book 
 
 ## Timekeeping
+I spent about 20 hours on the code and about 10 hours on the write up.
 
 ## Languages, Libraries, Lessons Learned
+Everything was written in python. I made an effort to write all of my code to be highly reusable. This meant that the same function I use to simulate the SHO could be used to simulate the n-body problem. 
