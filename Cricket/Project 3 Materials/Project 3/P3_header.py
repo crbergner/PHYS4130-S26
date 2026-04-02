@@ -10,11 +10,11 @@ import numpy as np
 from scipy.spatial import ConvexHull
 from scipy.integrate import odeint, solve_ivp
 
-# derivative function for the velocity-verlet sympletic integrator
+# derivative function for the velocity-verlet symplectic integrator
 def accel(x, v, omega, damping):
     return -omega**2*x - damping*v
 
-# derivative function for the RK45 sympletic integrator
+# derivative function for the RK45 symplectic integrator
 def deriv_ivp(t, N, omega, damping):
     x, v = N
     dxdt = v
@@ -41,6 +41,30 @@ def jacobian(int_func, qn, pn, dt, epsilon=1e-6):
   jacobian = np.column_stack((dq, dp)) # assemble the matrix
 
   return jacobian
+
+# scipy integrator function but for only one time step
+def onestep_odeint(q, p, dt, omega, damping):
+  def deriv(N, t):
+    x, v = N
+    dxdt = v
+    dvdt = -omega**2 * x - damping * v
+    return [dxdt, dvdt]
+     
+  t_span = [0, dt]
+  sol = odeint(deriv, [q, p], t_span)
+  nq = sol[-1, 0]
+  np = sol[-1, 1]
+
+  return nq, np
+
+# RK45 function but for only one time step
+def onestep_rk45(q, p, dt, omega, damping):
+    # simple Euler-like step using derivatives (approximate)
+    dqdt = p
+    dpdt = -omega**2 * q - damping * p
+    nq = q + dt * dqdt
+    np = p + dt * dpdt
+    return nq, np
 
 # velocity-verlet function but only for one time step
 def onestep_verlet(q, p, dt, omega, damping):
@@ -82,7 +106,7 @@ def scipy_method(N_initial, tmin, tmax, nts, deriv):
 
     return t, x, v
 
-# function that runs all three sympletic integrators for damped and undamped oscillators
+# function that runs all three symplectic integrators for damped and undamped oscillators
 def three_solvers(pts, omega, damping): 
   straj, rtraj, vtraj = [], [], [] # short for scipy trajectories (undamped)
   straj_d, rtraj_d, vtraj_d = [], [], [] # damped
@@ -108,7 +132,7 @@ def three_solvers(pts, omega, damping):
 
   return st, straj, rtraj, vtraj, straj_d, rtraj_d, vtraj_d
 
-# velocity-verlet sympletic integrator 
+# velocity-verlet symplectic integrator 
 def verlet(N_initial, tmin, tmax, nts, deriv):
 
   # define inital variables

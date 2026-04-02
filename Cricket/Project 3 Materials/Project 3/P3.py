@@ -48,7 +48,7 @@ plt.show()
 print("")
 
 # error plots
-print("The error of the RK4 and Scipy method as compared to the Velocity-Verlet value is shown below.")
+print("The error of the RK45and Scipy method as compared to the Velocity-Verlet value is shown below.")
 print("")
 
 # compute errors relative to Verlet
@@ -66,7 +66,7 @@ error_s = np.sqrt(error_x_s**2 + error_v_s**2)
 error_v = np.sqrt(error_x_v**2 + error_v_v**2)
 
 # plot the errors
-plt.plot(t_v[:nts], error_r[:nts], label="RK4 Error", color='#f37fb0')
+plt.plot(t_v[:nts], error_r[:nts], label="RK45 Error", color='#f37fb0')
 plt.plot(t_v[:nts], error_s[:nts], label="Scipy Error", color='#6316b0')
 plt.plot(t_v[:nts], error_v[:nts], '--', label="Verlet (baseline)", color='#61dbb0')
 plt.xlabel("Time (s)")
@@ -76,7 +76,7 @@ plt.legend()
 plt.show()
 print("")
 
-plt.plot(t_v[:nts], error_r[:nts], label="RK4 Error", color='#f37fb0')
+plt.plot(t_v[:nts], error_r[:nts], label="RK45 Error", color='#f37fb0')
 plt.plot(t_v[:nts], error_s[:nts], label="Scipy Error", color='#6316b0')
 plt.plot(t_v[:nts], error_v[:nts], '--', label="Verlet (baseline)", color='#61dbb0')
 plt.xscale('log')
@@ -118,7 +118,7 @@ plt.show()
 print("")
 
 # error plots
-print("The error of the RK4 and Scipy method as compared to the Velocity-Verlet value for a damped SHO is shown below.")
+print("The error of the RK45 and Scipy method as compared to the Velocity-Verlet value for a damped SHO is shown below.")
 print("")
 
 # compute errors relative to Verlet
@@ -136,7 +136,7 @@ error_s_d = np.sqrt(error_x_s_d**2 + error_v_s_d**2)
 error_v_d = np.sqrt(error_x_v_d**2 + error_v_v_d**2)
 
 # plot the errors
-plt.plot(nt_v[:nts], error_r_d[:nts], label="RK4 Error", color='#f37fb0')
+plt.plot(nt_v[:nts], error_r_d[:nts], label="RK45 Error", color='#f37fb0')
 plt.plot(nt_v[:nts], error_s_d[:nts], label="Scipy Error", color='#6316b0')
 plt.plot(nt_v[:nts], error_v_d[:nts], '--', label="Verlet (baseline)", color='#61dbb0')
 plt.xlabel("Time (s)")
@@ -146,7 +146,7 @@ plt.legend()
 plt.show()
 print("")
 
-plt.plot(nt_v[:nts], error_r_d[:nts], label="RK4 Error", color='#f37fb0')
+plt.plot(nt_v[:nts], error_r_d[:nts], label="RK45 Error", color='#f37fb0')
 plt.plot(nt_v[:nts], error_s_d[:nts], label="Scipy Error", color='#6316b0')
 plt.plot(nt_v[:nts], error_v_d[:nts], '--', label="Verlet (baseline)", color='#61dbb0')
 plt.xscale('log')
@@ -181,14 +181,14 @@ plt.show()
 print("")
 
 # plot the errors
-print("The error of the RK4 and Scipy method as compared to the Velocity-Verlet value is shown below.")
+print("The error of the RK45 and Scipy method as compared to the Velocity-Verlet value is shown below.")
 print("")
 
 error_r = E_r[:nts] - E_v[:nts]
 error_s = E_s[:nts] - E_v[:nts]
 error_v = E_v[:nts] - E_v[:nts]
 
-plt.plot(t_v[:nts], error_r[:nts], label="RK4 Error", color='#f37fb0')
+plt.plot(t_v[:nts], error_r[:nts], label="RK45 Error", color='#f37fb0')
 plt.plot(t_v[:nts], error_s[:nts], label="Scipy Error", color='#6316b0')
 plt.plot(t_v[:nts], error_v[:nts], '--', label="Verlet (Baseline)", color='#61dbb0')
 plt.xlabel("Time (s)")
@@ -198,7 +198,7 @@ plt.legend()
 plt.show()
 print("")
 
-plt.plot(t_v[:nts], error_r[:nts], label="RK4 Error", color='#f37fb0')
+plt.plot(t_v[:nts], error_r[:nts], label="RK45 Error", color='#f37fb0')
 plt.plot(t_v[:nts], error_s[:nts], label="Scipy Error", color='#6316b0')
 plt.plot(t_v[:nts], error_v[:nts], '--', label="Verlet (Baseline)", color='#61dbb0')
 plt.xscale('log')
@@ -226,14 +226,14 @@ plt.show()
 print("")
 
 # damped error
-print("The error of the RK4 and Scipy method as compared to the Velocity-Verlet value for a damped SHO is shown below.")
+print("The error of the RK45 and Scipy method as compared to the Velocity-Verlet value for a damped SHO is shown below.")
 print("")
 
 error_r_d = nE_r[:nts] - nE_v[:nts]
 error_s_d = nE_s[:nts] - nE_v[:nts]
 error_v_d = nE_v[:nts] - nE_v[:nts]
 
-plt.plot(nt_v[:nts], error_r_d[:nts], label="RK4 Error", color='#f37fb0')
+plt.plot(nt_v[:nts], error_r_d[:nts], label="RK45 Error", color='#f37fb0')
 plt.plot(nt_v[:nts], error_s_d[:nts], label="Scipy Error", color='#6316b0')
 plt.plot(nt_v[:nts], error_v_d[:nts], '--', label="Verlet (Baseline)", color='#61dbb0')
 plt.xlabel("Time (s)")
@@ -243,7 +243,7 @@ plt.legend()
 plt.show()
 print("")
 
-plt.plot(nt_v[:nts], error_r_d[:nts], label="RK4 Error", color='#f37fb0')
+plt.plot(nt_v[:nts], error_r_d[:nts], label="RK45 Error", color='#f37fb0')
 plt.plot(nt_v[:nts], error_s_d[:nts], label="Scipy Error", color='#6316b0')
 plt.plot(nt_v[:nts], error_v_d[:nts], '--', label="Verlet (Baseline)", color='#61dbb0')
 plt.xscale('log')
@@ -345,8 +345,7 @@ for Ngrid in mesh:
   plt.show()
 
 
-print('''
-################################################################################
+print('''################################################################################
 # Extension 2
 ################################################################################
 ''')
@@ -355,15 +354,28 @@ print("For an undamped SHO, the area should remain unchanged. We can test this b
 print("")
 
 qn, pn = 1.0, 2.0
-dt = 0.1
+dt = 0.2
 
 j = jacobian(lambda q, p, dt: onestep_verlet(q, p, dt, omega, damping), qn, pn, dt)
 det = np.linalg.det(j)
 
-print(f"Jacobian Matrix:\n{j}")
-print("")
+j_rk = jacobian(lambda q, p, dt: onestep_rk45(q, p, dt, omega, damping), qn, pn, dt)
+det_rk = np.linalg.det(j_rk)
+
+j_s = jacobian(lambda q, p, dt: onestep_odeint(q, p, dt, omega, damping), qn, pn, dt)
+det_s = np.linalg.det(j_s)
+
+print("Velocity-Verlet:")
 print(f"Determinant: {det:.1f}")
 print("")
-print("The determinant is one, thus, phase space area is conserved.")
+print("RK45:")
+print(f"Determinant: {det_rk:.3f}")
+print("")
+print("Scipy odeint:")
+print(f"Determinant: {det_s:.3f}")
+print("")
+
+print("The determinant is one for the Verlet integrator.")
+print("Thus, for the higher order integrator, phase space area is conserved.")
 
 ################################################################################
