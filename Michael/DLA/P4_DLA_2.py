@@ -4,14 +4,14 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
 np.random.seed()
-# Rough Idea for the code:
+# Rough Idea for the DLA algorithm:
 #
-# The Aggregate will be stored in a 2D numpy array of 1s and 0s. 
-# 1 = point is here, 0 = no point is here
-# A new point will start at a random spot in the aggregagte
+# The Aggregate will be stored in a 2D numpy array of non-zeros and 0s.  bigger number = newer
+# not 0 = aggregate point is here, 0 = no point is here
+# A new point will start at a random spot in the array
 # First, we check if any of its 4 neighboring spots are in the aggregate
-# If one of them is, then update that spot in the array to 1 and start the next point
-# If not, then do a random walk on the point and check again
+# If one of them is, then update that spot in the array to the current point total and start the next point
+# If not, then do a random walk step on the point and check again
 
 # DLA Functions ====================================================================================
 def Neighbors(Point, Agg): #Takes in the current point and the aggregate and searches for neighbor
@@ -32,7 +32,11 @@ def Neighbors(Point, Agg): #Takes in the current point and the aggregate and sea
     # this sum will only be greater than 0 if there is a neighbor.
     # it goes over the point (X,Y) twice and the neighbors once (when not at an edge)
 
-    if np.sum(Agg[Y, x_low:x_high+1]) + np.sum(Agg[y_low:y_high+1, X]) > 0:
+    #Summation patterns for finding neightbors: (sum > 0 implies next to a neighbor)
+    #Adjacent points only: np.sum(Agg[Y, x_low:x_high+1]) + np.sum(Agg[y_low:y_high+1, X]) > 0
+    #Diagonal points too: np.sum(Agg[y_low:y_high+1, x_low:x_high+1]) > 0
+
+    if np.sum(Agg[y_low:y_high+1, x_low:x_high+1]) > 0:
         return True
     return False
 
@@ -60,20 +64,33 @@ def Walk(Point): #This can be refined later.
             Y += np.random.choice([-1, 1])
 
         return [int(Y),int(X)]
-    
-def AddPoint(Aggregate, color_num):
-    S = 0.75 #stickyness
-    l = len(Aggregate[:, 0])
 
-    X = np.random.choice(range(0, l))
-    Y = np.random.choice(range(0, l))
+r_eff = [1] # I need r_eff to be a mutable object, and this is the easiest way to do it for this program
+def AddPoint(Aggregate, point_num): #numpy arrays are mutable, so we can alter them in functions easily
+    S = 0.9 #stickyness
+    l = len(Aggregate[:, 0]) #dimension of the square the aggregate lives in
     
-    while Aggregate[Y, X] > 0: #seed points outside of the aggregate
-        X = np.random.choice(range(0, l))
-        Y = np.random.choice(range(0, l))
-    X = int(X)
-    Y = int(Y)
+    #old r_eff formula: r_eff = np.sqrt(1+point_num)*2 + 4
+    r = r_eff[0]
+    theta = np.random.uniform(0, 6.28318530718)
 
+    x = l//2 + (0.5+r)*np.cos(theta)
+    y = l//2 + (0.5+r)*np.sin(theta)
+
+    #edge cases to keep poits in the array
+    if x < 0:
+        x = 0
+    if x > l -1:
+        x = l-1
+
+    if y < 0:
+        y = 0
+    if y > l-1:
+        y = l-1
+
+    X = int(np.round(x))
+    Y = int(np.round(y))
+    
     while Neighbors([Y, X], Aggregate) == False:
         Y, X = Walk([Y, X])
 
@@ -82,26 +99,30 @@ def AddPoint(Aggregate, color_num):
             if s > S: #smaller than S, walk again and check later
                 Y, X = Walk([Y, X])
 
-    Aggregate[Y, X] = color_num
+    d = np.sqrt((X - (l//2))**2 + (Y - (l//2))**2) #taxi distance between the new point and the origin
+    if d > r:
+        r_eff[0] = d
+
+    Aggregate[Y, X] = point_num + 250
     return
 
 # DLA Simulation =======================================================================================
-L = 150 #number of slots on one edge of the array
-N = 3000 #number of points to add to the aggregate
+L = 300 #number of slots on one edge of the array
+N = 5000 #number of points to add to the aggregate
 
 #Create the aggregate
 Aggregate = np.zeros((L,L)) 
 Aggregate[(L-1)//2][(L-1)//2] = 1 #seed point
 
 fig, ax = plt.subplots()
-im = ax.imshow(Aggregate, cmap='magma', vmin = 0, vmax = 2*(N+50))
+im = ax.imshow(Aggregate, cmap='magma', vmin = 0, vmax = N)
 
 def update(frame):
-    AddPoint(Aggregate, 2*(frame + 100))
+    AddPoint(Aggregate, frame)
     im.set_array(Aggregate)
 
     if (frame + 1)%25 == 0:
-        print(frame + 1, " of ", N, " points")
+        print(frame + 1, " of ", N, " points. Effective Radius: ", r_eff[0])
 
     return [im]
 
