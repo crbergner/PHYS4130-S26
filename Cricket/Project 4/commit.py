@@ -29,17 +29,6 @@ def move(px,py):
 
   return px, py
 
-# def sticking(px, py, grid, stickiness): # works but is slower
-#     neighbors = [(px + 1, py), (px - 1, py), (px, py + 1), (px, py - 1)]
-
-#     for nx, ny in neighbors:
-#         if 0 <= nx < grid.shape[0] and 0 <= ny < grid.shape[1]: # making sure nothing is out of bounds
-#             if grid[nx, ny] > 0:
-#                 if ra.random() <= stickiness:
-#                     return True  # if the random number is less that the stickiness factor, then it sticks
-
-#     return False
-
 def sticking(px, py, grid, stickiness):
     # check a 3x3 square around the particle to see where the neighbors are
     if np.any(grid[px-1:px+2, py-1:py+2] > 0):
