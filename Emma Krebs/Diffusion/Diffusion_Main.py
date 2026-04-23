@@ -6,6 +6,21 @@ from matplotlib.animation import PillowWriter
 import os
 
 def main(p, num):
+    '''
+        Main body for generating a DLA aggregation. 
+
+        Arg:
+            p (float): Stickiness probability
+            num (int): Number of particles to be used in aggregation
+
+        Returns: 
+            D (tuple): Coefficients to polyfit of middle section of capacity dimension graph
+            log_sizes: Log of the sizes of the boxes used for calculation
+            log_N: Log of the number of particles. 
+            stuck_locations (array): Array of locations of particles in our aggregate
+            center (array): Center of the grid and aggregation.
+            
+    '''
 
     num_particles = num # Note: Only use even numbers or else you will get error because of your division setup
     grid_value = int(num_particles/2)

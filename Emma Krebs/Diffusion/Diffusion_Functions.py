@@ -34,7 +34,7 @@ def get_neighbors(location):
         Grabs the surrounding neighbors. Includes diagonals as well for a total of eight neighbors.
 
         Args:
-            location: Center location of where a particl is. 
+            location: Center location of where a particle is. 
 
         Return:
             neighborhood: A list of points around our given location for a 2D grid. 
@@ -100,14 +100,18 @@ def particle_from_center(particle, center):
 
 def capacity_dimension(stuck_locations):
     '''
-        Calculates the capacity dimension for the finished DLA. 
+        Calculates the global capacity dimension for the finished DLA. 
 
         Arg:
-            
+            stuck_locations (array): Array of locations of particles in our aggregate
 
         Returns: 
+            D (tuple): Coefficients to polyfit of middle section of capacity dimension graph
+            log_sizes: Log of the sizes of the boxes used for calculation
+            log_N: Log of the number of particles. 
             
     '''
+    
     points = np.array(stuck_locations)
     points = points - np.min(points, axis=0) # Shift so all the points are in reference to our center
 
@@ -134,13 +138,26 @@ def capacity_dimension(stuck_locations):
     log_sizes = np.log(1 / sizes)
     log_N = np.log(Ns)
 
-    coeffs = np.polyfit(log_sizes[1:-1], log_N[1:-1], 1) # Fit the paramters
+    coeffs = np.polyfit(log_sizes[1:-1], log_N[1:-1], 1) # Fit the parameters
     D = coeffs # Grab slope
 
     return D, log_sizes, log_N
 
 
 def capacity_dimension_vs_radius(stuck_locations, center):
+    '''
+        Calculates the capacity dimension based on radaii of the aggregation. 
+
+        Arg:
+            stuck_locations (array): Array of locations of particles in our aggregate
+            center (array): Center of the grid and aggregation.
+            
+        Returns: 
+            radii (array): Returns radii used for calculating capacity_dimension
+            np.array(Ds) (array): Returns array of number of particles for each radii used. 
+            
+    '''
+
     points = np.array(stuck_locations)
     center = np.array(center)
 
