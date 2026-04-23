@@ -259,7 +259,7 @@ The stickyness affectst the liklihood of a particle sticking once it reaches the
 When we generate this for many more values of the stickyness, we get a plot that looks something like this:
 
 <div align="center">
-  <img src="CapacityVStciky.png" alt=Capacity V Stciky" width="600">
+  <img src="Capacity_VS_Sticky.png" alt=Capacity V Stciky" width="600">
   <p><em>Figure 5:</em> Effects of stickyness on the dimension for aggregates with N = 5000 points.</p>
 </div>
 
