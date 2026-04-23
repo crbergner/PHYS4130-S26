@@ -573,6 +573,7 @@ As the radius approaches its maximum value, the estimated dimension decreases to
 To further explore the behavior of DLA clusters at larger scales, an animation was generated for a simulation with 1 million particles. This extension provides insights into how the branching instability and fractal properties evolve as the cluster size increases.
 ### Limit of Local Computing Resources
 Below is the animation limit of a common laptop. Left running overnight, for about 12 hours, the simulation was able to generate a cluster with a little over 300,000 particles. 
+[View Figure 10 Animation](./Videos/3e5.mp4)
 <figure>
   [View Figure 10 Animation](./Videos/3e5.mp4)
   <figcaption><strong>Figure 10.</strong> DLA growth animation of 300,000 particles, the reasonable limit for a common laptop.</figcaption>
