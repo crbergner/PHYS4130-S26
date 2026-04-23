@@ -18,13 +18,17 @@ Diffusion-limited aggregation (DLA) is the process where particles undergo a ran
 
 It is important to note that DLA programs are not limited to the circular and spherical shapes above. They can adhere to straight lines, create brownian trees, and have many other shapes:
 
-<img src="Gifs_and_Images/Lungs_FLA.png" width="400"> <img src="Gifs_and_Images/Rec8_3kc2p.jpg.jpg" width="600">
+<img src="Gifs_and_Images/Lungs_FLA.png" width="400"> <img src="Gifs_and_Images/Rec8_3kc2p.jpg" width="600">
 
-*Fig. 2) Miscellanous DLA aggregations of different shapes. The first is just a creativity project from a user on X and the second is a Brownian Tree from the WIki*
+*Fig. 2) Miscellanous DLA aggregations of different shapes. The first is just a creative project from a user on X and the second is a Brownian Tree from the WIki*
 
 https://arxiv.org/html/2504.13400#:~:text=Initially%20proposed%20by%20Witten%20and,;%20jungblut%20;%20halsey%20;%20halsey2%20.
 
 DLAs are not solely a computational novelty either, but often appear in nature. For example, mineral deposits, fungi, lightning bolts, snowflakes, and even ants biting off wall paint all follow a form of diffusion-limited aggregation.
+
+<img src="Gifs_and_Images/Ants_Eat_Paint_YUM.jpg" width="400">
+
+*Fig. 3) DLA pattern from ants eating paint.*
 
 https://www.deconbatch.com/2019/10/the-poor-mans-dla-diffusion-limited.html
 
