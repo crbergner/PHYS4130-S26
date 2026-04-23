@@ -233,3 +233,7 @@ def box_counting_dimension(agg, min_box_size=1):
 ```
 With all the pieces in place we can start creating DLA fractals and computing their fractal dimension.
 
+## Capacity Dimension Vs Stickyness
+The stickyness affectst the liklihood of a particle sticking once it reaches the aggregate. We can see its affects by generating some plots as the stickyness decreases from 1.
+
+
