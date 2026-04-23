@@ -22,19 +22,13 @@ It is important to note that DLA programs are not limited to the circular and sp
 
 *Fig. 2) Miscellanous DLA aggregations of different shapes. The first is just a creative project from a user on X and the second is a Brownian Tree from the WIki*
 
-https://arxiv.org/html/2504.13400#:~:text=Initially%20proposed%20by%20Witten%20and,;%20jungblut%20;%20halsey%20;%20halsey2%20.
-
 DLAs are not solely a computational novelty either, but often appear in nature. For example, mineral deposits, fungi, lightning bolts, snowflakes, and even ants biting off wall paint all follow a form of diffusion-limited aggregation.
 
-<img src="Gifs_and_Images/Ants_Eat_Paint_YUM.jpg" width="400"> <img src="Gifs_and_Images/DLA_Cluster.jpeg" width="400">
+<img src="Gifs_and_Images/Ants_Eat_Paint_YUM.jpg" width="400"> <img src="Gifs_and_Images/DLA_Cluster.jpeg" width="600">
 
 *Fig. 3) Left image is DLA pattern from ants eating paint and right image is grown from a copper sulfate solution in an electrodeposition cell.*
 
-https://www.deconbatch.com/2019/10/the-poor-mans-dla-diffusion-limited.html
-
 There are three main factors that affect how an aggregate forms: seed particle location, stickiness probability, and what we consider ‘neighbors’. Stickiness probability determines how likely a particle will become a part of the aggregate when encountering a ‘stuck’ particle. High probabilities mean it will most likely stick to the first particle it encounters, meaning we have thinner, elongated branches. Lower probabilities allow more time for the particle to travel deeper into the structure on its random walk, so for the same number of particles these structures tend to be condensed with little to no branches (See GIFs and Images Section for More!). This also means that low stickiness eats up computation time because of the increased iterations of the particles’ random walks. Neighbor definitions can also change our aggregate branch shapes. For a 2D space, if we only consider the vertical and horizontal neighbors around our particle, we can get more rigid, cardinal growth along our axes compared to an eight neighbor approach. This program utilizes all eight neighbors for the 2D space. Finally, a seed particle is what determines the start of our accumulation for the aggregation. It is placed at a location to become our source point for the following particles to stick to, and it doesn’t necessarily have to be directly in the center of the particles’ generation range. 
-
-https://medium.com/nerd-for-tech/neighborhood-connections-and-connected-components-cedf922dd383 (source)
 
 Now that we know what a DLA is and how different factors can affect them, let us create our own!
 
@@ -81,11 +75,71 @@ Next, let us take a closer look at some of the more important functions!
 
 -octree
 
-
 ## Timekeeping
 
-4/9/26: 36 hours
+As of 4/23/26: 36 hours
 
 ## Sources
 
--Separate source list on google docs to be implemented
+People Used:
+
+Michael helped me with the capacity dimension. 
+
+Websites (Images and Information):
+
+https://tonybaloney.github.io/posts/why-is-python-so-slow.html
+
+https://cemrehancavdar.com/2026/03/10/optimization-ladder/ 
+
+https://eli.thegreenplace.net/2018/slow-and-fast-methods-for-generating-random-integers-in-python/ 
+
+https://en.wikipedia.org/wiki/Octree
+
+https://vpython.org/
+
+https://www.gut-wirtz.de/dla/improvements.html#:~:text=Outside%20the%20release%20radius%20we,the%20cluster%20during%20one%20step. 
+
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html 
+
+https://pypi.org/project/pyoctree/ 
+
+https://github.com/jcranch/octrees/blob/master/octrees/octrees.py
+
+https://medium.com/data-science/neighborhood-analysis-kd-trees-and-octrees-for-meshes-and-point-clouds-in-python-19fa96527b77 
+
+https://en.wikipedia.org/wiki/Color_quantization 
+
+https://eisenwave.github.io/voxel-compression-docs/svo/svo.html#:~:text=Best%20Case%20for%20Regular%20Octrees,best%20case%20is%20rarely%20encountered. 
+
+https://delimitry.blogspot.com/2016/02/octree-color-quantizer-in-python.html#:~:text=As%20each%20leaf%20has%20the,Delimitry%20at%204:14%20PM 
+
+https://www.geeksforgeeks.org/dsa/octree-insertion-and-searching/ 
+
+https://www.eskimo.com/~scs/cclass/int/sx4ab.html#:~:text=The%20&%20operator%20performs%20a%20bitwise,exclusive%2DOR%20on%20two%20integers. 
+
+https://vispy.org/api/vispy.scene.visuals.html
+
+https://towardsdatascience.com/neighborhood-analysis-kd-trees-and-octrees-for-meshes-and-point-clouds-in-python-19fa96527b77/ 
+
+https://markjstock.org/dla3d/ 
+
+https://discussions.unity.com/t/octree-subdivision-problem-solved/405500 
+https://alea.impa.br/articles/v14/14-15.pdf
+
+https://docs.actian.com/ingres/11.0/index.html#page/QUELRef/Numeric_Data_Types.htm 
+
+https://softologyblog.wordpress.com/category/diffusion-limited-aggregation/#:~:text=Another%20thing%20you%20want%20to,hits%20per%20update%20each%20frame.
+
+https://arxiv.org/html/2504.13400#:~:text=Initially%20proposed%20by%20Witten%20and,;%20jungblut%20;%20halsey%20;%20halsey2%20. 
+
+https://www.deconbatch.com/2019/10/the-poor-mans-dla-diffusion-limited.html 
+
+https://medium.com/nerd-for-tech/neighborhood-connections-and-connected-components-cedf922dd383 
+
+https://mathworld.wolfram.com/CapacityDimension.html 
+
+https://archive.lib.msu.edu/crcmath/math/math/c/c040.htm 
+
+https://www.w3schools.com/python/trypython.asp?filename=demo_matplotlib_pyplot 
+
+https://matplotlib.org/stable/api/_as_gen/matplotlib.animation.FuncAnimation.html 
