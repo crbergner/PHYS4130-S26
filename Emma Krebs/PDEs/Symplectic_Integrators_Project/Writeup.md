@@ -119,8 +119,14 @@ The function definition in the code is shown as:
 Now that we understand our three functions a little more, let us turn our attention to the main.py function. 
 
 ### Final Comparison
-- Create a graph with all three functions and compare the differences between them. Summarizing basically.
-- Here you will also talk about the T+V energy conservation (but more on that after I do the extensions).
+
+We saw before that for these integration methods that they had a pretty consistent phase space diagram. However, this was for a pretty small time step. This means that error isn't as easily accumulated between steps since not as much changes. This doesn't mean that there is no error, and if we compare it between two N spacing values N = 100 and N = 3000, we see how much this error can impact our energy conservation:
+
+<img src="Images_ODE/PhaseSpace3000.png" width="400"> <img src="Images_ODE/PhaseSpaceN100.png" width="600"> 
+
+*Fig 2. Here we have two phase space plots for our three integration methods and analytic solution. The time step is changed such that the spacing given by N is 3000 (on the left), resulting in small steps, and 100 (on the right), resulting in larger steps.*
+
+Thus, the error is now apparent. However, we need a more direct way to compare it. To do this, we will be comparing these methods through Total Energy vs Time, Relative Error vs Time, and Energy Drift vs Time for a variety of N spacings. Let us start with the former. 
 
 ## Extensions
 
