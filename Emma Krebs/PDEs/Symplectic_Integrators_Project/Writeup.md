@@ -146,7 +146,29 @@ Thus, the error is now apparent. However, we need a more direct way to compare i
 
 '''
 
-This function 
+This function returns the kinetic, potential, and total energy for a given array of x and p (along with their angular frequency) for a harmonic oscillator. It assumes the mass equals one so it can easily calculate these energies. It uses the general equations for kinetic and potentital energy such that for each x and p in these arrays:
+
+$$KE_{Value} = \dfrac{1}{2} * p^2$$
+$$PE_{Value} = \dfrac{1}{2} * w^2 * x^2$$
+$$TE_{Value} = KE_{Value} + PE_{Value} = \dfrac{1}{2} * p^2 + \dfrac{1}{2} * w^2 * x^2$$
+
+where these values are then appended to their respective arrays and returned. Thus, we find that:
+
+<img src="Images_ODE/TotalEnergyVSTime.png" width="800"> 
+
+*Fig 3. Total energy vs Time for three integration methods. This graph spans over the time of 150 seconds, but was zoomed in between 0 to 25 seconds to easily see the trends between the energies.*
+
+As we see above, our baseline of the analytic solution is a flat line, which makes sense since there should be no error in the harmonic oscillator function. Then, we see that the Symplectic and RK45 methods oscillate around the total energy value of the analytic solution. The Symplectic is expected because it conserves energy; however, the RK45 is decent at minimizing the accumulation of error due to its adjustments of its steps when integrating. We see near the end though that error starts accumulating enough to decrease the oscillation average, making RK45 not conserve energy. Finally, Odeint does not oscillate and is fairly sporadic with its total energy, eventually decreasing like RK45 but at a much quicker pace. 
+
+To compare these differences further, let us look at Relative Error vs Time. Here we calculate the relative error for these energies using the analytic value and the equation:
+
+$$\text{Relative Error} = | \text{analytic - estimated} | / (\text{analytic})$$
+
+and we find
+
+<img src="Images_ODE/RelativeErrorVSTime.png" width="800"> 
+
+Again, we see the relative error oscillate between 0 and a positive value indicating that, even though there is an error, it is manageable and still allows conservation of energy. Odeint is obviously once again collecting relative error at an alarming rate and, although this graph doesn't extend past 25 seconds, RK45 is also steadily collecting error while oscillating at that error value. 
 
 ## Extensions
 
