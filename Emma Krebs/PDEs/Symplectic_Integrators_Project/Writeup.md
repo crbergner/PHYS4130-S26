@@ -114,19 +114,39 @@ The function definition in the code is shown as:
 
 '''
 
-### Summary of Code
-
-Now that we understand our three functions a little more, let us turn our attention to the main.py function. 
-
 ### Final Comparison
 
-We saw before that for these integration methods that they had a pretty consistent phase space diagram. However, this was for a pretty small time step. This means that error isn't as easily accumulated between steps since not as much changes. This doesn't mean that there is no error, and if we compare it between two N spacing values N = 100 and N = 3000, we see how much this error can impact our energy conservation:
+Now that we understand our three functions a little more, let us turn our attention to the main.py function. We saw before that for these integration methods that they had a pretty consistent phase space diagram. However, this was for a pretty small time step. This means that error isn't as easily accumulated between steps since not as much changes. This doesn't mean that there is no error, and if we compare it between two N spacing values N = 100 and N = 3000, we see how much this error can impact our energy conservation:
 
 <img src="Images_ODE/PhaseSpace3000.png" width="400"> <img src="Images_ODE/PhaseSpaceN100.png" width="600"> 
 
 *Fig 2. Here we have two phase space plots for our three integration methods and analytic solution. The time step is changed such that the spacing given by N is 3000 (on the left), resulting in small steps, and 100 (on the right), resulting in larger steps.*
 
-Thus, the error is now apparent. However, we need a more direct way to compare it. To do this, we will be comparing these methods through Total Energy vs Time, Relative Error vs Time, and Energy Drift vs Time for a variety of N spacings. Let us start with the former. 
+Thus, the error is now apparent. However, we need a more direct way to compare it. To do this, we will be looking at the errors of these methods through Total Energy vs Time, Relative Error vs Time, and Energy Drift vs Time for a variety of N spacings. Let us start with the former. We need to start by finding the total energy using a function definition from ODE_Methods.py:
+
+''' python
+
+    def Total_energy(x_array, p_array, w):
+
+        kinetic_energy = []
+        potential_energy = []
+        total_energy = []
+        
+        # Assuming m = 1, we can find the kinetic, potential, and total energy through the following methods
+        for x, p in zip(x_array, p_array):
+            KE_value = (1/2) * p**2
+            PE_value = (1/2) * w**2 * x**2 # Since w is angular frequency and m = 1, so k = w**2
+            TE_value = KE_value + PE_value
+    
+            kinetic_energy.append(KE_value)
+            potential_energy.append(PE_value)
+            total_energy.append(TE_value)
+        
+        return kinetic_energy, potential_energy, total_energy
+
+'''
+
+This function 
 
 ## Extensions
 
@@ -142,7 +162,7 @@ Thus, the error is now apparent. However, we need a more direct way to compare i
 
 ## Timekeeping
 
-4/28: 18 hours
+4/28: 22 hours
 
 ## Sources
 
