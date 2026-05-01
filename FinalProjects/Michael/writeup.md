@@ -84,7 +84,7 @@ Then, to start time stepping we will need easy ways to compute various derivativ
 \begin{pmatrix} 1/6 & 4/6 & 1/6 \\ 4/6 & -20/6 & 4/6  \\ 1/6 & 4/6 & 1/6\end{pmatrix}
 \end{gathered}
 ```
-Where the elements of this matrix represent the weights of the adjacent values in the sum to approximate the laplacian. This python implementation with the roll function takes in an array and computes the laplacian at all points.
+Where the elements of this matrix represent the weights of the adjacent values in the sum to approximate the laplacian. The python implementation below utilizes the roll function to take in an array and computes the laplacian at all points.
 ```python
 def Laplacian_9pt(U, h): #my old one (this) is faster
 
@@ -100,7 +100,14 @@ def Laplacian_9pt(U, h): #my old one (this) is faster
         - 20*U
     )/(6 * h**2)
 ```
+Then, another useful function would be something that computes the derivatices for the two solutions.
+```python
+def F(t, U, V): #sample derivatives for the wave equation
+    dU_dt = V
+    dV_dt = Laplacian_9pt(U, h)
 
+    return [dU_dt, dV_dt]
+```
 
 
 
