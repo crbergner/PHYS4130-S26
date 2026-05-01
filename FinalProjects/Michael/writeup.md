@@ -125,8 +125,19 @@ def rhs(t, Y): #this computes the derivitives for the single list representation
     #package our derivative to be in the same form factor as packaged system.
     return np.concatenate([dU_dt.flatten(), dV_dt.flatten()])
 ```
+Now, we can start generating solutions by passing through solve_ivp(). We have some choices for our integrator. For this, we will go with RK45.
+```python
+from scipy.integrate import solve_ivp
 
-
+sol = solve_ivp(
+    rhs, 
+    t_span = (0, T_final), 
+    y0 = Y0,
+    method = 'RK45',
+    t_eval = np.linspace(0, T_final, Nt)
+    )
+```
+Finally, we can start creating some animated simulations. 
 
 
 
