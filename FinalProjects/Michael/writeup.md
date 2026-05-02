@@ -188,6 +188,8 @@ Then, with the same conditions as before, the simulation produces the following 
 
 ![Wave Equation](Wave_Eqn_Periodic.gif)
 
+<video src="Wave_Equation_Test.mp4" controls width="600"></video>
+
 
 ## Old Stuff from the outline
 a) There is a hihgly intuitive way of numerically solving PDEs. 
