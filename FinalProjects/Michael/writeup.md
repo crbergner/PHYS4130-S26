@@ -188,6 +188,32 @@ Then, with the same conditions as before, the simulation produces the following 
 
 ![Wave Equation](Wave_Eqn_Periodic.gif)
 
+One last thing we can do to improve the program is add the ability to do fixed value boundary conditions. This can be done in the rhs function that is fed into solve_ivp. 
+```python
+Do_BCs = True
+
+def rhs(t, Y):
+    
+    U = Y[:N*N].reshape((N, N)) #slice up to N*N - 1
+    V = Y[N*N:].reshape((N, N)) #slice ater N*N
+    
+    #Enforce values
+    if Do_BCS == True:
+        U[boundary]   = 0
+        V[boundary] = 0
+    
+    # compute derivatives...
+    dU_dt, dV_dt = F(t, U, V)
+
+    #Enforce dynamics to stop them from updating
+    if Do_BCS == True:
+        dU_dt[boundary]   = 0
+        dV_dt[boundary] = 0
+
+    return np.concatenate([dU_dt.flatten(), dV_dt.flatten()])
+```
+Where boundary is an array of points that is non-zero where we want to fix our values. The first round of updates is to ensure the values of the functions are fixed. The last round is to ensure that the time derivatives are zero to prevent the functions from attempting to update. If that were not there then systems would slowly leak energy even if they theoreitcally shouldn't. By getting creative with how you set the boundaries, you can create a double slit experiment with the wave equation to demonstrate that classical waves behave as quantum particles. 
+
 <video src="Wave_Equation_Test.mp4" controls width="600"></video>
 
 
