@@ -2,6 +2,7 @@
 dummy intro
 There are PDEs that must be solved. But, they don't want to be solved. However, mathematicians are clever. THey found a way to solve problems that don't want to be solved!
 
+## The Method of Lines
 ### Theory
 The first method we will investigate is known as the method of lines. It builds off of already devloped ODE  integrators as well as the numeric differentiation stencils that we studied in previous projcets. Because of this, the problem must be written in a form such that it is first order in time, and that time derivative should be isolated from the other terms of the PDE. The goal is to turn the PDE into a system of coupled ODEs in all but one coordinate. 
 
@@ -58,9 +59,6 @@ We can transform this into a first ordey system through the following
 ```
 Of course, now you have to solve for the other function over time as well by allowing a coupling of the two through derivatives. This also allows you to consider systems of PDEs that are first order in time. 
 
-
-
-## The Method of Lines
 ### Implementation
 The first thing to decide is how the solutions will be stored. Numpy arrays are a natural choice. They allow the indexing elements in the same way as the construction of our method. Furhtermore, this allows acces to the vectorization of numpy arrays, which will allows us to easily compute changes in our solution when time stepping. 
 
@@ -216,53 +214,41 @@ Where "boundary" is an array of points that is non-zero where we want to fix our
 
 ![Wave Equation](Wave_Eqn_Boundary.gif)
 
-One last equation to test with this methd is the 2D Kuramoto-Sivashinsky Equation. 
-
+Another interesting equation to simulate is the 2D Kuramoto-Sivashinsky Equation (KSE). It's a popular example of a simple PDE that exhibits spatiotemporal chaos. It's time evolution features the creation, intereaction, and annihiliation of small cell-like structures that bob around before fading away.
 ```math
 \begin{gathered}
-\partial_t \, u = \nabla^2 u + \nabla^4 u + \frac{1}{2} |\nabla u|^2
+\partial_t \, u = \nabla^2 u + \nabla^4 u + |\nabla u|^2 \\
+\text{where } \, \nabla^4 = \partial_x^4 + 2\, \partial_x^2 \, \partial_y^2 + \partial_y^4  \, \text{ is the bilaplacian}
 \end{gathered}
 ```
+Those 4th order derivatives and nonlinear terms are unsettling. Not to mention that it would be an ordeal to implement a function to compute the bilaplacian alone due to that mixed term. Even if we did do that, this equation is famously stiff. An algorithm as basic as the the method of lines can't possibly be accurate enough for this PDE with a resonable spatial or temporal discretization. Therefore, we need a sophisticated method that can handle the numerous spatial derivatives in a more precise manner than this while still having robust time stepping. Thankfully, such methods do exist, and we will see how one is constructed.
 
-## Old Stuff from the outline
-a) There is a hihgly intuitive way of numerically solving PDEs. 
-  I) We are able to discretize spatial derivativres over our spatial domain and create a 
-     large system of coupled ODEs since the approximation of the spatial derivatives
-     mixes discretized terms.
-  II) Then, we can churn this system of ODEs through a numeerical method such as RK45 
-      and create a numerical solution. 
-  III) Here, show a plot of a sample simulation that I can animate
-b) That method is fine enough for simple PDEs, but if you want to do something 
-   more complicated then you need a more sophisticated method. If we want to solve something
-   like the Kuramoto-Sivashinksy equation (which is 4th order in space and nonlinear) then the old method
-   won't cut it. Instead, we can use Exponential Time Difference RK4 (ETDRK4)
-   I) Explaining the method: We want to solve a PDE of the form 
+## Exponential Time Difference RK4 (ETDRK4)
+### Theory
+Let's briefly turn our attention from the KSE and instead look at the broader class of problems that it falls under. Condsider PDEs of the form
 ```math
-\partial_t u = Lu + N(u)
+\begin{gathered}
+\partial_t u = Lu + N(u,t) \\
+\text{where L is a linear operator and N(u,t) is the nonlinear term} \,
+\end{gathered}
 ```
-  Where L is a linear (but possibly stiff) operator and N(u) is nonlinear. 
-
-  II) Then, if L is a differential operator, and we solve our problem over periodic BCs, then we can write our funciton as a fourier expansion
+subjected to periodic boundary conditions. let h be a timestep. We now introduce an integrating factor
 ```math
-u(x,y,t) = \sum_{k_x , k_y} A_{k_x, k_y}(t) e^{i(k_x  x + k_y  y)},
+w(x,y,t) = e^{-Lh} \,u.
 ```
-  and L is now a diagonal operator in the sense that u is represented in the eigenbasis of L. 
-  Let 
-```math
-\hat{u(t)} = \begin{pmatrix} A_{k_x, k_y}(t) \end{pmatrix}_{k_x, k_y wave numbers}
-```
-  be the fourier space representation of u. 
-  III) Let h be a timestep. We now introduce an integrating factor
-```math
-w(x,y,t) = e^{-Lh}.
-```
-  Recall that the matrix exponential is itself an operator. This allows us to derive an exact time step formula.
-  (Skipping steps here to get to the time step formula)
+Recall that the matrix exponential is itself an operator. This allows us to derive an exact time step formula.
 ```math
 u(x,y, t+h) = e^{Lh}u(x,y,t) + e^{Lh} \int_{0}^{h} e^{-L\tau} N(u(x,y,t+\tau)d\tau.
 ```
-This formula is exact, and the RK4 part comes in how we approximate this integral (not included here atm)
-We need the fourier space representation for the efficient computation of matrix exponentials. 
+We expand our solution as a fourier series
+```math
+u(x,y,t) = \sum_{k_x , k_y} A_{k_x, k_y}(t) e^{i(k_x  x + k_y  y)},
+```
+Let 
+```math
+\hat{u(t)} = \begin{pmatrix} A_{k_x, k_y}(t) \end{pmatrix}_{k_x, k_y wave numbers}
+```
+be the fourier space representation of u. 
 
 # Solving the Kuramoto Sivashinksy Equation
 Derive the particular update formula for ETDRK4 here for the KS equation. Show pretty plots, and the python implementation here.
