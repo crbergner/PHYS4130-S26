@@ -188,7 +188,7 @@ Then, with the same conditions as before, the simulation produces the following 
 
 ![Wave Equation](Wave_Eqn_Periodic.gif)
 
-One last thing we can do to improve the program is add the ability to do fixed value boundary conditions. This can be done in the rhs function that is fed into solve_ivp. 
+Which definitley looks like waves propogating. One last thing we can do to improve the program is add the ability to do fixed value boundary conditions. This can be done in the rhs function that is fed into solve_ivp. The modified function is as follows.
 ```python
 Do_BCs = True
 
@@ -212,10 +212,17 @@ def rhs(t, Y):
 
     return np.concatenate([dU_dt.flatten(), dV_dt.flatten()])
 ```
-Where boundary is an array of points that is non-zero where we want to fix our values. The first round of updates is to ensure the values of the functions are fixed. The last round is to ensure that the time derivatives are zero to prevent the functions from attempting to update. If that were not there then systems would slowly leak energy even if they theoreitcally shouldn't. By getting creative with how you set the boundaries, you can create a double slit experiment with the wave equation to demonstrate that classical waves behave as quantum particles. 
+Where "boundary" is an array of points that is non-zero where we want to fix our values. The first round of updates is to ensure the values of the functions are fixed. The last round is to ensure that the time derivatives are zero to prevent the functions from attempting to update. If that were not there then systems would slowly leak energy even if they theoreitcally shouldn't. By getting creative with how you set the boundaries, you can see how the wave equation behaves with a double slit and demonstrate that classical waves behave as quantum particles. 
 
-<video src="Wave_Equation_Test.mp4" controls width="600"></video>
+![Wave Equation](Wave_Eqn_Boundary.gif)
 
+One last equation to test with this methd is the 2D Kuramoto-Sivashinsky Equation. 
+
+```math
+\begin{gathered}
+\partial_t \, u = \nabla^2 u + \nabla^4 u + \frac{1}{2} |\nabla u|^2
+\end{gathered}
+```
 
 ## Old Stuff from the outline
 a) There is a hihgly intuitive way of numerically solving PDEs. 
