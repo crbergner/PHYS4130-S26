@@ -263,7 +263,17 @@ By shuffling around terms and canceling out repeating factors, we obtain an exac
 ```math
 u(x,y, t+h) = e^{Lh}\,u(x,y,t) + e^{Lh}\, \int_{0}^{h} e^{-L\tau}\, N(u(x,y,t+\tau,t+\tau)\,d\tau.
 ```
-Up until this point, we have not done anything different from the construction of other exponential time differencing methods. The distinction comes in how you approximate the integral. Hence the name, ETDRK4, we will use a RK4-like quadrature to approximate it. 
+By creating some discretization variables, we can rewrite this as an update formula.
+```math
+\begin{aligned}
+\text{Let} h be a time step \\
+\text{Let} t_n \, = n\,h \\
+\text{Let} u_{n+1} = e^{L\,h}\,u_n + e^{L\,h}\, \int_{0}^{h} e^{-L\tau}\, N(u(x,y,t+\tau,t+\tau)\,d\tau.
+\end{aligned}
+```
+Up until this point, we have not done anything different from the construction of other exponential time differencing methods. The distinction comes in how you approximate the integral. Hence the name, ETDRK4 uses an RK4-like quadrature to approximate it in terms of our discretization variables. Their derivation is not presented here, but can be found in original paper detailing this method "Exponential Time Differencing for Stiff Systems" by Cox and Matthews. Our quadtrature coefficients are computed with the following formulas.
+```math
+```
 ```math
 u(x,y,t) = \sum_{k_x , k_y} A_{k_x, k_y}(t) e^{i(k_x  x + k_y  y)},
 ```
