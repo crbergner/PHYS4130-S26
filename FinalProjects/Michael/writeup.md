@@ -294,17 +294,24 @@ At this point, the theory for this method has technically been fully developed. 
 ```math
 u(x,y,t) = \sum_{k_x , k_y} A_{k_x, k_y}(t) e^{i(k_x  x + k_y  y)},
 ```
-Then, because L is a linear differential operator, it immediatley follows that L is diagonal in this fourier space representation of L. This is becuase the plane waves are the eigenstates of differentiation. For example, consider the partial derivative with repect to x. 
+Then, because L is a linear differential operator, it immediatley follows that L is diagonal in this fourier space representation of L. This is becuase the plane waves are the eigenstates of differentiation. For example, consider the partial derivative with repect to x on a generic 2D plane wave. 
 ```math
-\begin{aligned}
+\begin{align*}
+\partial_x \, e^{i\,(k_x \, x + k_y y)} &= i\,k_x\,e^{i\,(k_x \, x + k_y y)}
+\end{align*}
+```
+This will become useful when we impliment the algorithm into python. Thanks to the Fast Fourier Transform (FFT) we can efficiently go from the position space to the frequeny space representations of the function. Therefore, our computations of operator exponentials reduce from matrix multiplication to just simple evaluations of the exponential at several points. Again, we demonstrate this with the partial derivative with respect to x. 
+```math
+\begin{align*}
+e^{\partial_x} \, e^{i\,(k_x \, x + k_y y)}
+&= \sum_{n = 0}^{\infty} \frac{\partial_x ^n }{n\,!} \, e^{i\,(k_x \, x + k_y y)} \\
+&= \sum_{n = 0}^{\infty} \frac{i^n \, k_x^n }{n\,!} \, e^{i\,(k_x \, x + k_y y)} \\
+&= e^{i \, k_x} e^{i\,(k_x \, x + k_y y)} \\
+\end{align*}
+```
+Therefore, any time we need to compute something involving a derivative we can simply do it in Fourier space. The very final piece of theory that needs to be built has to do with the computaion of the coefficients f1, f2, and f3 for the update formula. Those will not vary as we step through time. When we evalutate them in fourier space, we just substitute in the eigenvalues of L. However, these eigenvalues can be in regions where the formulas risk catastrophic cancellation. Therefore, they can be computationally unstable. Thankfully, a trick devleloped by Kassam and Trefethen addresses this. Recall Cauchy's Formula from Complex Analysis. 
 
-\end{aligned}
-```
-Let 
-```math
-\hat{u(t)} = \begin{pmatrix} A_{k_x, k_y}(t) \end{pmatrix}_{k_x, k_y wave numbers}
-```
-be the fourier space representation of u. 
+
 
 # Solving the Kuramoto Sivashinksy Equation
 Derive the particular update formula for ETDRK4 here for the KS equation. Show pretty plots, and the python implementation here.
