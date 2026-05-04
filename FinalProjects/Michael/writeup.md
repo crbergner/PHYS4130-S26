@@ -332,4 +332,143 @@ Furthermore, it is easy to show that
 ```math
 L\,e^{i\,(k_x \, x + k_y y)} \, = \, (k_x^2 + k_y^2 - (k_x^2 + k_y^2)^2)\,e^{i\,(k_x \, x + k_y y)}
 ```
-  
+With those two things in mind, we start putting together the program. We start by initializing our postion, frequency, and L arrays as well as initial conditions on our solution.
+```python
+# N = number of points along a spatial dimension
+N = 100
+
+# size = length along the spatial dimensions
+size = 75
+
+# spatial arrays (uncombined) will be combined into an array of coordinates
+x = size*np.arange(0,N)/N
+y = size*np.arange(0,N)/N
+
+#our space
+X, Y = np.meshgrid(x, y, indexing='ij')
+
+dx = x[1] - x[0]
+dy = y[1] - y[0]
+
+kx = np.fft.fftfreq(N, d=dx) * 2*np.pi
+ky = np.fft.fftfreq(N, d=dy) * 2*np.pi
+
+# our array of eigenvlaues of L
+Kx, Ky = np.meshgrid(kx, ky, indexing='ij')
+
+K2 = Kx**2 + Ky**2
+
+#fourier space matrix for L
+L = 0.25*(K2 - K2**2) 
+
+# random noise IC
+u0 = 0.01*np.random.randn(len(x), len(y))
+```
+Then, we set up code for things we can procompute.
+```python
+# ETDRK4 COEFFICIENTS =========================================================================================================
+t_steps = int(Tmax/h)
+# Operator Exponentials 
+E = np.exp(h*L)
+E2 = np.exp(0.5*h*L)
+
+# Set up to do contour integral trick by Kasam
+M = 20
+r = np.exp(1j*np.pi*(np.arange(1, M+1) - 0.5)/M) #pieces of the unit circle
+z = h * (L) #arguments of the phi functions
+LR = z[:, :, None] + r[None, None, :] #take all the points in z and add a unit circle around them
+
+# the actual coefficents computed using the contour integral trick
+f1 = h*np.mean(((-4-LR+np.exp(LR)*(4-3*LR+LR**2))/LR**3),axis=2).real
+f2 = h*np.mean(((2+LR+np.exp(LR)*(-2+LR))/LR**3),axis=2).real
+f3 = h*np.mean(((-4-3*LR-LR**2+np.exp(LR)*(4-LR))/LR**3),axis=2).real
+
+Q  = h*np.mean(((np.exp(LR/2) - 1) / (LR)), axis=2).real
+```
+Next, we need to set up a function that takes in our forier space representation of our function, computes the nonlinear term in positon spsace since that is harder, and then returns the fourier space representation of the nonlinear term.
+```python
+def NonLinear(u_ft, t): #takes in fourier transformed u and computes the non linear part.
+    #spatial derivatives
+    u_x = np.fft.ifft2(-1j*Kx*u_ft).real
+    u_y = np.fft.ifft2(-1j*Ky*u_ft).real
+
+    # nonlinear terms in position space
+    N = -0.5 * (u_x**2 + u_y**2)
+    return np.fft.fft2(N) #return to fourier space
+```
+Note here that we are using the 2D FFT function in numpy because our problem is 2D. Now, we can define a function to do a single time step in fourier space. 
+
+```python
+def Step(u_ft, t):
+    t = n*h
+
+    #RK4 stepping
+    Nu = NonLinear(u_ft, t)
+    a = E2*u_ft + Q*Nu
+    Na = NonLinear(a ,t + h/2)
+    b = E2*u_ft + Q*Na
+    Nb = NonLinear(b, t + h/2)
+    c = E2*a + Q*(2*Nb-Nu)
+    Nc = NonLinear(c ,t + h)
+    u_ft_new = E*u_ft + Nu*f1 + 2* (Na+Nb)*f2 + Nc*f3
+
+    return u_ft_new
+```
+Now, we can easily create a loop to compute our solution. 
+```python
+
+#our initial state in fourier space
+v = np.fft.fft2(u0) #create v as the fourier transform of u0
+
+#start these lists to save the funciton over time
+u_list = [u0]
+t_list = [0]
+
+#nplt = number of steps stored in the animation. nplt = 1 means save all. larger means save less
+nplt = 13
+
+#Tmax = maximum time
+Tmax = 300
+
+# h = time step size
+h = 0.25
+
+#Verbosity controls how often the program reports progress
+verbosity = int(Tmax/(10*h))
+
+for n in range(1,t_steps+1):
+    #step
+    t = n*h
+    v = Step(v, t)
+
+    if n%nplt == 0: #to save for animating
+        u = np.fft.ifft2(v).real
+        u_list.append(np.copy(u))
+        t_list.append(np.copy(t))
+    if n%verbosity == 0: # to output progress
+        print(100*n/len(range(1,t_steps+1)), " % complete")
+````
+When we test this out with with the KSE, our animated solution looks like this
+
+(PUT THE DIVERGING SOLUTION WITHOUT THE FIXED AVERAGE dynamics)
+
+We can kind of see our expected dynamics, bu there is this large uniform background that divereges as time goes on. To trouble shoot this, we need to look at any terms in our solution that correspond to a constant term in our solution. In our fourier series for the solution, we see that this goes with the (0,0) mode. Then, if we see how a constant term evolves according to the KSE, it's clear that it should be constant in time since all of its spatial derivaties are zero. Then, we also observe that our solution diverges slowly over the simulation time. Therefore, we conclude that our approximation for the dynamics of the (0,0) mode is slightly off form zero in the same direciton at each step. Thus, we accumulate these little errors over enoguh time to see diveregence. This is an occasional problem with tihs method, and it is easily fixed by enforcing the (0,0) mode to be constant in time inside our step function. 
+```python
+def Step(u_ft, t):
+    a00 = u_ft[0,0] #to enforce constant average
+    t = n*h
+
+    #RK4 stepping
+    Nu = NonLinear(u_ft, t)
+    a = E2*u_ft + Q*Nu
+    Na = NonLinear(a ,t + h/2)
+    b = E2*u_ft + Q*Na
+    Nb = NonLinear(b, t + h/2)
+    c = E2*a + Q*(2*Nb-Nu)
+    Nc = NonLinear(c ,t + h)
+    u_ft_new = E*u_ft + Nu*f1 + 2*(Na+Nb)*f2 + Nc*f3
+
+    #enforce constant average
+    u_ft_new[0,0] = a00
+    return u_ft_new
+```
