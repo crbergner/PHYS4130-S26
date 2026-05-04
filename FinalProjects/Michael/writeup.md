@@ -453,6 +453,7 @@ When we test this out with with the KSE, our animated solution looks like this
 (PUT THE DIVERGING SOLUTION WITHOUT THE FIXED AVERAGE dynamics)
 
 We can kind of see our expected dynamics, bu there is this large uniform background that divereges as time goes on. To trouble shoot this, we need to look at any terms in our solution that correspond to a constant term in our solution. In our fourier series for the solution, we see that this goes with the (0,0) mode. Then, if we see how a constant term evolves according to the KSE, it's clear that it should be constant in time since all of its spatial derivaties are zero. Then, we also observe that our solution diverges slowly over the simulation time. Therefore, we conclude that our approximation for the dynamics of the (0,0) mode is slightly off form zero in the same direciton at each step. Thus, we accumulate these little errors over enoguh time to see diveregence. This is an occasional problem with tihs method, and it is easily fixed by enforcing the (0,0) mode to be constant in time inside our step function. 
+
 ```python
 def Step(u_ft, t):
     a00 = u_ft[0,0] #to enforce constant average
@@ -472,3 +473,6 @@ def Step(u_ft, t):
     u_ft_new[0,0] = a00
     return u_ft_new
 ```
+Now, with this fix implemented, our simulations are exactly creating the solutions that we expect. 
+
+(PUT THE SIMULATION HERE)
