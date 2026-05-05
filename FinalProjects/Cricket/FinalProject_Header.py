@@ -69,7 +69,7 @@ def find_closest_magnet(x, y, magnets):
 Function name: generate_fast_fractal
 What it does: Simulates the motion of many initial conditions simultaneously using vectorized operations instead 
               of individual ODE solvers. It evolves all points forward in time, tracks how quickly they settle, 
-              and assigns each point to a magnet to build the fractal image. Result is stored as a 2D array.
+              and assigns each point to a magnet to build the fractal image. Result is stored as an array.
 '''
 def generate_fast_fractal(magnets, res=400, max_iter=400):
 
@@ -136,7 +136,7 @@ def generate_polygon_magnets(N, R=1.0):
 
 '''
 Function name: plot_random_trajectories
-What it does: Randomly generates initial speed and velocity in the x and y directions. 
+What it does: Randomly generates initial position and velocity in the x and y directions. 
               Uses the integration function to plot how the motion performs under the random initial conditions for N magnets. 
 '''
 def plot_random_trajectories(magnets, title):
