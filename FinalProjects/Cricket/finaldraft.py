@@ -16,7 +16,7 @@ from FinalProject_Header import *
 # initial conditions
 damping = 0.2
 vertical_offset = 0.3
-t_span = (0,20)
+t_span = (0,50)
 initial_conditions, solutions = [], []
 
 # loop over multiple magnet configurations
