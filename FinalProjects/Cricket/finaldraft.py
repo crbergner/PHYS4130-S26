@@ -100,11 +100,11 @@ for N in configs:
     restoring = 0.05
     magnetic_strength = 1.2
 
-    # 3 slightly different initial conditions
+    # initial conditions are the same, but this is set up so you could change them later
     states = [
-        [-1.2, 1.22, 0.0, 0.0], # RK45
+        [-1.2, 1.20, 0.0, 0.0], # RK45
         [-1.2, 1.20, 0.0, 0.0], # DOP853
-        [-1.2, 1.25, 0.0, 0.0]  # Heun
+        [-1.2, 1.20, 0.0, 0.0]  # Heun
     ]
 
     for steps in step_sizes:
